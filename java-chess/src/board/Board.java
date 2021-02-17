@@ -23,6 +23,12 @@ public class Board extends JPanel {
 	public Board() {
 		createFields(fields);
 		setupChesspieces(fields);
+		// Initialize players with clocks
+		players = new Player[2];
+		players[0] = new Player(false,false,this);
+		players[1] = new Player(false,true,this);
+		// Initialize notation
+		notation = new Notation(this);
 		// TODO Auto-generated method stub
 	}
 	
@@ -70,6 +76,18 @@ public class Board extends JPanel {
 	
 	public void resume() {
 		// TODO Auto-generated method stub
+	}
+	
+	public Notation getNotation() {
+		return notation;
+	}
+	
+	public Player getPlayerByColor(boolean isBlack) {
+		if(!isBlack) {
+			return players[0];
+		} else {
+			return players[1];
+		}
 	}
 	
 	private class FieldListener implements ActionListener {

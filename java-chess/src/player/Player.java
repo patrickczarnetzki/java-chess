@@ -13,11 +13,11 @@ public class Player {
 		this.isPlaying = isPlaying;
 		this.isBlack = isBlack;
 		this.board = board;
-		this.clock = null;
+		this.clock = new Clock(this,60,0);
 		// TODO Auto-generated method stub
 	}
 	
-	public boolean isPlaing() {
+	public boolean isPlaying() {
 		return isPlaying;
 	}
 	
