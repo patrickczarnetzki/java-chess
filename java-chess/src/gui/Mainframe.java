@@ -1,9 +1,12 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -38,9 +41,11 @@ public class Mainframe extends JFrame {
 		// East Component (Recording Panel)
 		JPanel recordingPanel = new JPanel(new BorderLayout());
 		// North Component in Recording Panel (Clock Panel)
-		JPanel clockPanel = new JPanel(new BorderLayout());
-		clockPanel.add(board.getPlayerByColor(false).getClock(),BorderLayout.WEST);
-		clockPanel.add(board.getPlayerByColor(true).getClock(),BorderLayout.EAST);
+		JPanel clockPanel = new JPanel(new FlowLayout());
+		clockPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		clockPanel.setBackground(Color.decode("#262521"));
+		clockPanel.add(board.getPlayerByColor(false).getClock());
+		clockPanel.add(board.getPlayerByColor(true).getClock());
 		recordingPanel.add(clockPanel,BorderLayout.NORTH);
 		// Center Component in Recording Panel (Notation)
 		recordingPanel.add(board.getNotation());
