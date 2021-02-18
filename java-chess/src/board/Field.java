@@ -1,5 +1,7 @@
 package board;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 
 import pieces.Chesspiece;
@@ -21,7 +23,8 @@ public class Field extends JButton {
 		this.column = column;
 		this.id = id;
 		this.isOccupied = isOccupied;
-		// TODO Auto-generated method stub
+		// Styling
+		setBorder(null);
 	}
 	
 	public void setChesspiece(Chesspiece chesspiece) {
