@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -28,8 +31,7 @@ public class Mainframe extends JFrame {
 	public void initializeComponents() {
 		// Style, Size, Behaviour
 		setTitle("Java-Chess by Patrick Czarnetzki");
-		setMinimumSize(new Dimension(1024,768));
-		setSize(1024,768);
+		setMinimumSize(new Dimension(990,768));
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// North Component (Topmenu)
