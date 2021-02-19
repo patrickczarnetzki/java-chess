@@ -18,11 +18,15 @@ public abstract class Chesspiece {
 		this.player = player;
 		this.icon = icon;
 		this.type = type;
-		// TODO Auto-generated method stub
+		
 	}
 	
 	public Field getField() {
 		return field;
+	}
+	
+	public void setField(Field field) {
+		this.field = field;
 	}
 	
 	public boolean isBlack() {

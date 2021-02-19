@@ -1,6 +1,7 @@
 package board;
 
 import java.awt.Dimension;
+import java.awt.Insets;
 
 import javax.swing.JButton;
 
@@ -25,10 +26,16 @@ public class Field extends JButton {
 		this.isOccupied = isOccupied;
 		// Styling
 		setBorder(null);
+		setMargin(new Insets(0,0,0,0));
 	}
 	
 	public void setChesspiece(Chesspiece chesspiece) {
-		// TODO Auto-generated method stub
+		this.chesspiece = chesspiece;
+		this.chesspiece.setField(this);
+		// Set ImageIcon
+		setIcon(chesspiece.getIcon());
+		// Field is occupied by this chesspiece now
+		isOccupied = true;
 	}
 	
 	public void deleteChesspiece() {
