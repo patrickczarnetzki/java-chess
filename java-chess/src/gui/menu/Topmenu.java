@@ -18,7 +18,7 @@ public class Topmenu extends JPanel {
 		// Initialize Mainframe
 		this.mainframe = mainframe;
 		// Styling
-		setBackground(Color.decode("#191919"));
+		setBackground(Color.decode("#3D454F"));
 		// Buttons will be stored in flow layout
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		// Initialize buttons
