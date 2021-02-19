@@ -10,9 +10,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import pieces.Bishop;
 import pieces.King;
+import pieces.Knight;
+import pieces.Pawn;
+import pieces.Queen;
+import pieces.Rook;
 import player.Player;
 import recording.Notation;
 
@@ -28,8 +34,10 @@ public class Board extends JPanel {
 	private int round;
 	
 	public Board() {
-		createFields(fields);
-		setupChesspieces(fields);
+		// Initialize field array
+		fields = new Field[10][10];
+		// Initialize field listener
+		fieldListener = new FieldListener();
 		// Initialize players with clocks
 		players = new Player[2];
 		players[0] = new Player(false,false,this);
@@ -39,62 +47,29 @@ public class Board extends JPanel {
 		// Set background to grey-blue color, add border to get some space between the end of this panel
 		setBackground(Color.decode("#4B5869"));
 		setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+		// Create fields
+		createFields(fields);
+		// Setup chesspieces
+		setupChesspieces(fields);
 	}
 	
 	public void createFields(Field[][] fields) {
-		// Initialize field array, 8x8 fields for the playing fields, rest for the borders
-		fields = new Field[10][10];
-		// Add GridBagLayout to this panel
-		setLayout(new GridBagLayout());
-		// Create a GridBagConstraint to change properties of each field
-		GridBagConstraints constraintsFields = new GridBagConstraints();
+		// Add GridLayout
+		setLayout(new GridLayout(10,10));
 		// Create iterators for ids and color switching
 		int iteratorID = 0;
 		int iteratorColor = 0;
 		// r=row (horizontal) c=column (vertical)
 		for(int r=0; r<fields.length; r++) {
 			for(int c=0; c<fields[r].length; c++) {
-				// Find fields which represent left and right ending of the board
+				// Find fields which represent top and bottom ending of the board
 				if(r==0 || r==9) {
-					// Initialize left and right border fields
-					fields[r][c] = new Field(this,true,null,r-1,c-1,100,true);
-					fields[r][c].setBackground(Color.decode("#3D454F"));
-					fields[r][c].setForeground(Color.WHITE);
-					fields[r][c].setPreferredSize(new Dimension(45,70));
-					// Set chess coordinates
-					switch(c) {
-					case 1: fields[r][c].setText("8"); break;
-					case 2: fields[r][c].setText("7"); break;
-					case 3: fields[r][c].setText("6"); break;
-					case 4: fields[r][c].setText("5"); break;
-					case 5: fields[r][c].setText("4"); break;
-					case 6: fields[r][c].setText("3"); break;
-					case 7: fields[r][c].setText("2"); break;
-					case 8: fields[r][c].setText("1"); break;
-					}
-					// Check for corners
-					if(c==0 || c==9) {
-						fields[r][c].setPreferredSize(new Dimension(45,45));
-					}
-					// Set constraints
-					constraintsFields.gridx = r;
-					constraintsFields.gridy = c;
-					constraintsFields.gridwidth = 1;
-					constraintsFields.gridheight = 1;
-					constraintsFields.fill = GridBagConstraints.BOTH;
-					constraintsFields.weightx = 1;
-					constraintsFields.weighty = 1;
-					// Add to GridBagLayout
-					add(fields[r][c],constraintsFields);
-					// Find fields which represent top and bottom ending of the board
-				} else if(c==0 || c==9) {
 					// Initialize top and bottom border fields
 					fields[r][c] = new Field(this,true,null,r-1,c-1,100,true);
 					fields[r][c].setBackground(Color.decode("#3D454F"));
 					fields[r][c].setForeground(Color.WHITE);
-					fields[r][c].setPreferredSize(new Dimension(70,45));
 					// Set chess coordinates
-					switch(r) {
+					switch(c) {
 					case 1: fields[r][c].setText("a"); break;
 					case 2: fields[r][c].setText("b"); break;
 					case 3: fields[r][c].setText("c"); break;
@@ -104,49 +79,46 @@ public class Board extends JPanel {
 					case 7: fields[r][c].setText("g"); break;
 					case 8: fields[r][c].setText("h"); break;
 					}
-					// Set constraints
-					constraintsFields.gridx = r;
-					constraintsFields.gridy = c;
-					constraintsFields.gridwidth = 1;
-					constraintsFields.gridheight = 1;
-					constraintsFields.fill = GridBagConstraints.BOTH;
-					constraintsFields.weightx = 1;
-					constraintsFields.weighty = 1;
-					// Add to GridBagLayout
-					add(fields[r][c],constraintsFields);
+					// Add to GridLayout
+					add(fields[r][c]);
+					// Find fields which represent left and right ending of the board
+				} else if(c==0 || c==9) {
+					// Initialize left and right border fields
+					fields[r][c] = new Field(this,true,null,r-1,c-1,100,true);
+					fields[r][c].setBackground(Color.decode("#3D454F"));
+					fields[r][c].setForeground(Color.WHITE);
+					// Set chess coordinates
+					switch(r) {
+					case 1: fields[r][c].setText("8"); break;
+					case 2: fields[r][c].setText("7"); break;
+					case 3: fields[r][c].setText("6"); break;
+					case 4: fields[r][c].setText("5"); break;
+					case 5: fields[r][c].setText("4"); break;
+					case 6: fields[r][c].setText("3"); break;
+					case 7: fields[r][c].setText("2"); break;
+					case 8: fields[r][c].setText("1"); break;
+					}
+					// Add to GridLayout
+					add(fields[r][c]);
 				} else {
 					// Initialize playing fields (8x8 of two different colors)
 					if(iteratorColor%2==0) {
 						fields[r][c] = new Field(this,true,null,r-1,c-1,iteratorID,false);
 						fields[r][c].setBackground(Color.decode("#DDE2C6"));
-						fields[r][c].setPreferredSize(new Dimension(70,70));
-						// Set constraints
-						constraintsFields.gridx = r;
-						constraintsFields.gridy = c;
-						constraintsFields.gridwidth = 1;
-						constraintsFields.gridheight = 1;
-						constraintsFields.fill = GridBagConstraints.BOTH;
-						constraintsFields.weightx = 1;
-						constraintsFields.weighty = 1;
-						// Add to GridBagLayout
-						add(fields[r][c],constraintsFields);
+						// Add ActionListener
+						fields[r][c].addActionListener(fieldListener);
+						// Add to GridLayout
+						add(fields[r][c]);
 						// Increment iterators to get new ids and switch color
 						iteratorColor++;
 						iteratorID++;
 					} else {
 						fields[r][c] = new Field(this,false,null,r-1,c-1,iteratorID,false);
 						fields[r][c].setBackground(Color.decode("#93827F"));
-						fields[r][c].setPreferredSize(new Dimension(70,70));
-						// Set constraints
-						constraintsFields.gridx = r;
-						constraintsFields.gridy = c;
-						constraintsFields.gridwidth = 1;
-						constraintsFields.gridheight = 1;
-						constraintsFields.fill = GridBagConstraints.BOTH;
-						constraintsFields.weightx = 1;
-						constraintsFields.weighty = 1;
-						// Add to GridBagLayout
-						add(fields[r][c],constraintsFields);
+						// Add ActionListener
+						fields[r][c].addActionListener(fieldListener);
+						// Add to GridLayout
+						add(fields[r][c]);
 						// Increment iterators to get new ids and switch color
 						iteratorColor++;
 						iteratorID++;
@@ -164,7 +136,61 @@ public class Board extends JPanel {
 	}
 	
 	public void setupChesspieces(Field[][] fields) {
-		// TODO Auto-generated method stub
+		for(int r=0; r<fields.length; r++) {
+			for(int c=0; c<fields[r].length; c++) {
+				// Check if that is not a border field (ID = 100)
+				if(fields[r][c].getID()!=100) {
+					// Setup black pieces (no Pawns)
+					if(fields[r][c].getRow()==0 && fields[r][c].getColumn()==0) {
+						fields[r][c].setChesspiece(new Rook(fields[r][c],true,players[1],new ImageIcon("src/gfx/RookBlack.png"),"Rook"));
+					} else if(fields[r][c].getRow()==0 && fields[r][c].getColumn()==1) {
+						fields[r][c].setChesspiece(new Knight(fields[r][c],true,players[1],new ImageIcon("src/gfx/KnightBlack.png"),"Knight"));
+					} else if(fields[r][c].getRow()==0 & fields[r][c].getColumn()==2) {
+						fields[r][c].setChesspiece(new Bishop(fields[r][c],true,players[1],new ImageIcon("src/gfx/BishopBlack.png"),"Bishop"));
+					} else if(fields[r][c].getRow()==0 & fields[r][c].getColumn()==3) {
+						fields[r][c].setChesspiece(new Queen(fields[r][c],true,players[1],new ImageIcon("src/gfx/QueenBlack.png"),"Queen"));
+					} else if(fields[r][c].getRow()==0 & fields[r][c].getColumn()==4) {
+						fields[r][c].setChesspiece(new King(fields[r][c],true,players[1],new ImageIcon("src/gfx/KingBlack.png"),"King"));
+					} else if(fields[r][c].getRow()==0 & fields[r][c].getColumn()==5) {
+						fields[r][c].setChesspiece(new Bishop(fields[r][c],true,players[1],new ImageIcon("src/gfx/BishopBlack.png"),"Bishop"));
+					} else if(fields[r][c].getRow()==0 & fields[r][c].getColumn()==6) {
+						fields[r][c].setChesspiece(new Knight(fields[r][c],true,players[1],new ImageIcon("src/gfx/KnightBlack.png"),"Knight"));
+					} else if(fields[r][c].getRow()==0 & fields[r][c].getColumn()==7) {
+						fields[r][c].setChesspiece(new Rook(fields[r][c],true,players[1],new ImageIcon("src/gfx/RookBlack.png"),"Rook"));
+					}
+					// Setup white chesspieces (no pawns)
+					if(fields[r][c].getRow()==7 && fields[r][c].getColumn()==0) {
+						fields[r][c].setChesspiece(new Rook(fields[r][c],false,players[0],new ImageIcon("src/gfx/RookWhite.png"),"Rook"));
+					} else if(fields[r][c].getRow()==7 && fields[r][c].getColumn()==1) {
+						fields[r][c].setChesspiece(new Knight(fields[r][c],false,players[0],new ImageIcon("src/gfx/KnightWhite.png"),"Knight"));
+					} else if(fields[r][c].getRow()==7 & fields[r][c].getColumn()==2) {
+						fields[r][c].setChesspiece(new Bishop(fields[r][c],false,players[0],new ImageIcon("src/gfx/BishopWhite.png"),"Bishop"));
+					} else if(fields[r][c].getRow()==7 & fields[r][c].getColumn()==3) {
+						fields[r][c].setChesspiece(new Queen(fields[r][c],false,players[0],new ImageIcon("src/gfx/QueenWhite.png"),"Queen"));
+					} else if(fields[r][c].getRow()==7 & fields[r][c].getColumn()==4) {
+						fields[r][c].setChesspiece(new King(fields[r][c],false,players[0],new ImageIcon("src/gfx/KingWhite.png"),"King"));
+					} else if(fields[r][c].getRow()==7 & fields[r][c].getColumn()==5) {
+						fields[r][c].setChesspiece(new Bishop(fields[r][c],false,players[0],new ImageIcon("src/gfx/BishopWhite.png"),"Bishop"));
+					} else if(fields[r][c].getRow()==7 & fields[r][c].getColumn()==6) {
+						fields[r][c].setChesspiece(new Knight(fields[r][c],false,players[0],new ImageIcon("src/gfx/KnightWhite.png"),"Knight"));
+					} else if(fields[r][c].getRow()==7 & fields[r][c].getColumn()==7) {
+						fields[r][c].setChesspiece(new Rook(fields[r][c],false,players[0],new ImageIcon("src/gfx/RookWhite.png"),"Rook"));
+					}
+				}
+			}
+		}
+		// Setup Black Pawns
+		for(int c=0; c<fields[2].length; c++) {
+			if(fields[2][c].getID()!=100) {
+				fields[2][c].setChesspiece(new Pawn(fields[2][c],true,players[1],new ImageIcon("src/gfx/PawnBlack.png"),"Pawn"));
+			}
+		}
+		// Setup White Pawns
+		for(int c=0; c<fields[7].length; c++) {
+			if(fields[7][c].getID()!=100) {
+				fields[7][c].setChesspiece(new Pawn(fields[7][c],true,players[0],new ImageIcon("src/gfx/PawnWhite.png"),"Pawn"));
+			}
+		}
 	}
 	
 	public King searchAndGetKing(Boolean isBlack) {
@@ -214,8 +240,9 @@ public class Board extends JPanel {
 	
 	private class FieldListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+		public void actionPerformed(ActionEvent event) {
+			Field tmpField = (Field) event.getSource();
+			System.out.println("You clicked on field id " + tmpField.getID() + " which is on row " + tmpField.getRow() + " and on column " + tmpField.getColumn());
 		}
 	}
 }
