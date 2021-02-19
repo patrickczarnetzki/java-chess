@@ -32,4 +32,8 @@ public class Player {
 	public Board getBoard() {
 		return board;
 	}
+	
+	public void setIsPlaying(boolean isPlaying) {
+		this.isPlaying = isPlaying;
+	}
 }

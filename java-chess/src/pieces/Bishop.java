@@ -9,7 +9,6 @@ public class Bishop extends Chesspiece {
 
 	public Bishop(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
 		super(field, isBlack, player, icon, type);
-		// TODO Auto-generated method stub
 	}
 	
 	@Override

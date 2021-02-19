@@ -11,7 +11,6 @@ public class Rook extends Chesspiece {
 	public Rook(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
 		super(field, isBlack, player, icon, type);
 		isUntouched = true;
-		// TODO Auto-generated method stub
 	}
 	
 	public boolean isUntouched() {

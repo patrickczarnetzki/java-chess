@@ -39,7 +39,9 @@ public class Field extends JButton {
 	}
 	
 	public void deleteChesspiece() {
-		// TODO Auto-generated method stub
+		this.chesspiece = null;
+		this.isOccupied = false;
+		setIcon(null);
 	}
 	
 	public Chesspiece getChesspiece() {

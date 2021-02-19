@@ -25,7 +25,6 @@ public class Mainframe extends JFrame {
 
 	public Mainframe() {
 		initializeComponents();
-		// TODO Auto-generated method stub
 	}
 	
 	public void initializeComponents() {
