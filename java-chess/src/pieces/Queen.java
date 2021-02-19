@@ -9,7 +9,6 @@ public class Queen extends Chesspiece {
 
 	public Queen(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
 		super(field, isBlack, player, icon, type);
-		// TODO Auto-generated method stub
 	}
 	
 	@Override

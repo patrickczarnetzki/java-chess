@@ -17,7 +17,6 @@ public class King extends Chesspiece {
 		isUsingShortRochade = false;
 		isUsingLongRochade = false;
 		isInCheck = false;
-		// TODO Auto-generated method stub
 	}
 	
 	@Override
