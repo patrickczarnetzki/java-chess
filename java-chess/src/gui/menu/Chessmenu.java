@@ -18,7 +18,7 @@ public class Chessmenu extends JPanel {
 		// Initialize mainframe
 		this.mainframe = mainframe;
 		// Styling chessmenu
-		setBackground(Color.decode("#191919"));
+		setBackground(Color.decode("#3D454F"));
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		// Initialize buttons
 		btnResign = new MenuButton("Resign");
