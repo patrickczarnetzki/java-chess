@@ -1,5 +1,9 @@
 package pieces;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import board.Field;
@@ -105,14 +109,50 @@ public class Pawn extends Chesspiece {
 			}
 		} else {
 			// Field was occupied
+			// Create a list to store found valid movement positions
+			List<Integer> validMovement = new ArrayList<Integer>();
 			// Check for opponent chesspiece on ending field
 			if(endingField.getChesspiece().isBlack()!=isBlack()) {
 				// Check playing color to choose right direction (white pawns move from bottom to top and black pawns from top to bottom)
 				if(!isBlack()) {
 					// White pawn is attacking
-					
+					// Check for column 0 for exception handling
+					if(startingColumn==0) {
+						// Add valid movement position to ArrayList
+						validMovement.add(-7);
+					} else if(startingColumn==7) {
+						// Add valid movement position to ArrayList
+						validMovement.add(-9);
+					} else {
+						// Add valid movement position to ArrayList
+						validMovement.add(-9);
+						validMovement.add(-7);
+					}
 				} else {
 					// Black pawn is attacking
+					// Check for column 0 for exception handling
+					if(startingColumn==0) {
+						// Add valid movement position to ArrayList
+						validMovement.add(9);
+					} else if(startingColumn==7) {
+						// Add valid movement position to ArrayList
+						validMovement.add(7);
+					} else {
+						// Add valid movement positions to ArrayList
+						validMovement.add(7);
+						validMovement.add(9);
+					}
+				}
+				// Check for a match
+				for(int i=0; i<validMovement.size(); i++) {
+					if(startingFieldID+validMovement.get(i)==endingFieldID) {
+						// Check for transformation
+						if(endingRow==0) {
+							isTransforming = true;
+						}
+						// Return valid movement
+						return true;
+					}
 				}
 			}
 		}
