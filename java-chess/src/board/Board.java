@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import gui.menu.Transformation;
 import pieces.Bishop;
 import pieces.Chesspiece;
 import pieces.King;
@@ -245,11 +246,11 @@ public class Board extends JPanel {
 	}
 	
 	public void pause() {
-		// TODO Auto-generated method stub
+		isGamePaused = true;
 	}
 	
 	public void resume() {
-		// TODO Auto-generated method stub
+		isGamePaused = false;
 	}
 	
 	public Notation getNotation() {
@@ -349,7 +350,12 @@ public class Board extends JPanel {
 									tmpPawn.getEnemyPawn().getField().deleteChesspiece();
 								}
 								// Check for transformation
-								
+								if(tmpPawn.isTransforming()) {
+									// Open transformation menu and pause the game until transformation is done
+									pause();
+									// Game will be resumed by choosing a chesspiece in transformation menu
+									Transformation transformation = new Transformation(clickedField);
+								}
 							}							
 							// Switch to starting move
 							isStartingMovement = !isStartingMovement;
