@@ -340,8 +340,17 @@ public class Board extends JPanel {
 							
 							// Do the move and set chesspiece to new position
 							clickedField.setChesspiece(chesspiece);
-							// Check for pawn transformation
-							
+							// Check for Pawn transformation and en-passant
+							if(chesspiece.getType().equals("Pawn")) {
+								Pawn tmpPawn = (Pawn) chesspiece;
+								// Check for en-passant
+								if(tmpPawn.isUsingEnPassant()) {
+									// Delete enemy Pawn
+									tmpPawn.getEnemyPawn().getField().deleteChesspiece();
+								}
+								// Check for transformation
+								
+							}							
 							// Switch to starting move
 							isStartingMovement = !isStartingMovement;
 							// Check if it was the first move of the game to start the black clock for the first time
