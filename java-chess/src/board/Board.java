@@ -333,12 +333,17 @@ public class Board extends JPanel {
 					// Check for valid movement
 					if(chesspiece.isValidMovement(clickedField) ) {
 						// Check if king would not be checkmate after movement
+						/// Store chesspiece on clickedField for restoring
+						Chesspiece chesspieceClickedField = clickedField.getChesspiece();
+						/// Set chesspiece temporary to ending field
+						clickedField.setChesspiece(chesspiece);
+						/// Do the check test
 						King tmpKing = searchAndGetKing(chesspiece.isBlack());
-						// Set chesspiece temporary to ending field
-						// Do the check test
 						if(!tmpKing.isInCheck()) {
 							// Delete temporary settings
-							
+							if(chesspieceClickedField!=null) {
+								clickedField.setChesspiece(chesspieceClickedField);
+							}
 							// Do the move and set chesspiece to new position
 							clickedField.setChesspiece(chesspiece);
 							// Check for Pawn transformation and en-passant
