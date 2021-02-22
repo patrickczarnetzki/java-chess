@@ -18,7 +18,6 @@ public abstract class Chesspiece {
 		this.player = player;
 		this.icon = icon;
 		this.type = type;
-		
 	}
 	
 	public Field getField() {

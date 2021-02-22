@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import board.Board;
 
+// Good colors for entries: 657180 / 89929D
+
 public class Notation extends JPanel {
 	private Board board;
 	private List<Entry> entryList;
@@ -28,7 +30,7 @@ public class Notation extends JPanel {
 		Font fntHeadline = new Font("SansSerif",Font.BOLD,20);
 		lblHeadline.setOpaque(true);
 		lblHeadline.setForeground(Color.WHITE);
-		lblHeadline.setBackground(Color.decode("#32312F"));
+		lblHeadline.setBackground(Color.decode("#3D454F"));
 		lblHeadline.setBorder(BorderFactory.createEmptyBorder(5,5,5,0));
 		lblHeadline.setFont(fntHeadline);
 		lblHeadline.setHorizontalAlignment(JLabel.LEFT);
@@ -37,7 +39,7 @@ public class Notation extends JPanel {
 		JPanel listPanel = new JPanel();
 		// Styling of listPanel
 		listPanel.setLayout(new BoxLayout(listPanel,BoxLayout.Y_AXIS));
-		listPanel.setBackground(Color.decode("#262521"));
+		listPanel.setBackground(Color.decode("#657180"));
 		listPanel.setBorder(null);
 		// Create a JScrollPane
 		JScrollPane listScrollPane = new JScrollPane(listPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

@@ -25,7 +25,6 @@ public class Mainframe extends JFrame {
 
 	public Mainframe() {
 		initializeComponents();
-		// TODO Auto-generated method stub
 	}
 	
 	public void initializeComponents() {
@@ -45,7 +44,7 @@ public class Mainframe extends JFrame {
 		// North Component in Recording Panel (Clock Panel)
 		JPanel clockPanel = new JPanel(new FlowLayout());
 		clockPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-		clockPanel.setBackground(Color.decode("#262521"));
+		clockPanel.setBackground(Color.decode("#4B5869"));
 		clockPanel.add(board.getPlayerByColor(false).getClock());
 		clockPanel.add(board.getPlayerByColor(true).getClock());
 		recordingPanel.add(clockPanel,BorderLayout.NORTH);
