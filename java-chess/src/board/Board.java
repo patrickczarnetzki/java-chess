@@ -346,6 +346,32 @@ public class Board extends JPanel {
 							}
 							// Do the move and set chesspiece to new position
 							clickedField.setChesspiece(chesspiece);
+							// Check for Rochade
+							if(chesspiece.getType().equals("King")) {
+								King tmpRochadeKing = (King) chesspiece;
+								// Check for long rochade
+								if(tmpRochadeKing.isUsingLongRochade()) {
+									// Move left Rook
+									Rook tmpRook = (Rook) tmpRochadeKing.getField().getBoard().getFieldByID(tmpRochadeKing.getField().getID()-2).getChesspiece();
+									tmpRochadeKing.getField().getBoard().getFieldByID(tmpRochadeKing.getField().getID()+1).setChesspiece(tmpRook);
+									tmpRochadeKing.getField().getBoard().getFieldByID(tmpRochadeKing.getField().getID()-2).deleteChesspiece();
+									// After using it can't be reused
+									tmpRochadeKing.setIsUsingLongRochade(false);
+									// Also short rochade can't be used anymore
+									tmpRochadeKing.setIsUsingShortRochade(false);
+								}
+								// Check for short rochade
+								if(tmpRochadeKing.isUsingShortRochade()) {
+									// Move right Rook
+									Rook tmpRook = (Rook) tmpRochadeKing.getField().getBoard().getFieldByID(tmpRochadeKing.getField().getID()+1).getChesspiece();
+									tmpRochadeKing.getField().getBoard().getFieldByID(tmpRochadeKing.getField().getID()-1).setChesspiece(tmpRook);
+									tmpRochadeKing.getField().getBoard().getFieldByID(tmpRochadeKing.getField().getID()+1).deleteChesspiece();
+									// After using it can't be reused
+									tmpRochadeKing.setIsUsingShortRochade(false);
+									// Also long rochade can't be used anymore
+									tmpRochadeKing.setIsUsingLongRochade(false);
+								}
+							}
 							// Check for Pawn transformation and en-passant
 							if(chesspiece.getType().equals("Pawn")) {
 								Pawn tmpPawn = (Pawn) chesspiece;

@@ -52,6 +52,59 @@ public class King extends Chesspiece {
 			validMovement.add(8);
 		// Has to be normal movement
 		} else {
+			// Check for long and short rochade
+			// Check if king wasn't moved yet
+			if(isUntouched() ) {
+				// Check for long rochade
+				if(endingFieldID==startingFieldID-2) {
+					// Check if Rook is on starting field
+					Chesspiece tmpChesspiece = endingField.getBoard().getFieldByID(startingFieldID-4).getChesspiece();
+					if(tmpChesspiece!=null) {
+						if(tmpChesspiece.isBlack()==isBlack()) {
+							if(tmpChesspiece.getType().equals("Rook")) {
+								Rook tmpRook = (Rook) tmpChesspiece;
+								// Check if Rook wasn't moved before
+								if(tmpRook.isUntouched()) {
+									// Check for a free route between King and Rook
+									for(int i=startingFieldID-1; i>startingFieldID-4; i--) {
+										if(endingField.getBoard().getFieldByID(i).isOccupied()) {
+											isUsingLongRochade = false;
+											break;
+										} else {
+											isUsingLongRochade = true;
+											validMovement.add(-2);
+										}
+									}
+								}
+							}
+						}
+					}
+				} else if(endingFieldID==startingFieldID+2) {
+					// Check if Rook is on starting field
+					Chesspiece tmpChesspiece = endingField.getBoard().getFieldByID(startingFieldID+3).getChesspiece();
+					if(tmpChesspiece!=null) {
+						if(tmpChesspiece.isBlack()==isBlack()) {
+							if(tmpChesspiece.getType().equals("Rook")) {
+								Rook tmpRook = (Rook) tmpChesspiece;
+								// Check if Rook wasn't moved before
+								if(tmpRook.isUntouched()) {
+									// Check for a free route between King and Rook
+									for(int i=startingFieldID+1; i<startingFieldID+3; i++) {
+										if(endingField.getBoard().getFieldByID(i).isOccupied()) {
+											isUsingShortRochade = false;
+											break;
+										} else {
+											isUsingShortRochade = true;
+											validMovement.add(2);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			// Normal movement
 			validMovement.add(-9);
 			validMovement.add(-8);
 			validMovement.add(-7);
@@ -70,12 +123,14 @@ public class King extends Chesspiece {
 				} else {
 					// Field is occupied by opponent color
 					if((validMovement.get(i)+startingFieldID)==endingFieldID) {
+						isUntouched = false;
 						return true;
 					}
 				}
 			} else {
 				// Field is not occupied
 				if((validMovement.get(i)+startingFieldID)==endingFieldID) {
+					isUntouched = false;
 					return true;
 				}
 			}
@@ -91,8 +146,16 @@ public class King extends Chesspiece {
 		return isUsingShortRochade;
 	}
 	
+	public void setIsUsingShortRochade(boolean isUsingShortRochade) {
+		this.isUsingShortRochade = isUsingShortRochade;
+	}
+	
 	public boolean isUsingLongRochade() {
 		return isUsingLongRochade;
+	}
+	
+	public void setIsUsingLongRochade(boolean isUsingLongRochade) {
+		this.isUsingLongRochade = isUsingLongRochade;
 	}
 	
 	public boolean isInCheck() {
