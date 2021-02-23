@@ -428,6 +428,17 @@ public class Board extends JPanel {
 							}
 						} else {
 							System.out.println("King would be in checkmate after movement.");
+							// Restore old settings
+							isStartingMovement = !isStartingMovement;
+							// Set chesspiece back to starting position
+							getFieldByID(startingFieldID).setChesspiece(chesspiece);
+							// Check if ending field was occupied an restore it
+							if(chesspieceClickedField!=null) {
+								getFieldByID(endingFieldID).setChesspiece(chesspieceClickedField);
+							} else {
+								// Delete old chesspiece
+								getFieldByID(endingFieldID).deleteChesspiece();
+							}
 						}
 					} else {
 						// Invalid movement

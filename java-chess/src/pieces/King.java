@@ -159,6 +159,257 @@ public class King extends Chesspiece {
 	}
 	
 	public boolean isInCheck() {
+		// Get field id of king
+		int kingID = getField().getID();
+		// Column of the check test for iteration and detecting the end of the board
+		int checkTestColumn = getField().getColumn()-1;
+		// Row of the check test for iteration and detectin the end of the board
+		int checkTestRow = getField().getRow()-1;
+		// Checking horizontal left
+		// Start with the first left field beside the king and go on until you reach the end of the board
+		for(int i=kingID-1; i>=0; i--) {
+			// Check if we have reached the end of the board (left border)
+			if(checkTestColumn<0) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestColumn--;
+		}
+		// Start to check right route
+		// Set check test column to new position
+		checkTestColumn = getField().getColumn()+1;
+		// Checking horizontal right
+		// Start with the first right field beside the king and go on until you reach the end of the board
+		for(int i=kingID+1; i<=63; i++) {
+			// Check if we have reached the end of the board (right border)
+			if(checkTestColumn>7) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestColumn++;
+		}
+		// Checking vertical top
+		// Start with the first upper field above the king and go on until you reach the end of the board
+		for(int i=kingID-8; i>=0; i=i-8) {
+			// Check if we have reached the end of the board (top border)
+			if(checkTestRow<0) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestRow--;
+		}
+		checkTestRow = getField().getRow()+1;
+		// Checking vertical bottom
+		// Start with the first field under the king and go on until you reach the end of the board
+		for(int i=kingID+8; i<=63; i=i+8) {
+			// Check if we have reached the end of the board (bottom border)
+			if(checkTestRow>7) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestRow++;
+		}
+		// Checking diagonals
+		// Upper left
+		checkTestColumn = getField().getColumn()-1;
+		for(int i=kingID-9; i>=0; i=i-9) {
+			//Check if we have reached column 0 (break)
+			if(checkTestColumn<0) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestColumn--;
+		}
+		// Upper right
+		checkTestColumn = getField().getColumn()+1;
+		for(int i=kingID-7; i>=0; i=i-7) {
+			//Check if we have reached column 0 (break)
+			if(checkTestColumn>7) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestColumn++;
+		}
+		// Lower left
+		checkTestColumn = getField().getColumn()-1;
+		for(int i=kingID+7; i<=63; i=i+7) {
+			//Check if we have reached column 0 (break)
+			if(checkTestColumn<0) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestColumn--;
+		}
+		// Lower right
+		checkTestColumn = getField().getColumn()+1;
+		for(int i=kingID+9; i<=63; i=i+9) {
+			//Check if we have reached column 7 (break)
+			if(checkTestColumn>7) {
+				break;
+			}
+			// Check if field is occupied
+			if(getField().getBoard().getFieldByID(i).isOccupied()) {
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(i).getChesspiece();
+				// Check if it is occupied by own color (no check on this route possible)
+				if(tmpChesspiece.isBlack()==isBlack()) {
+					isInCheck = false;
+					break;
+				} else {
+					// It is occupied by enemy color
+					// Check for Rook and Queen on that position (Would be check)
+					if(tmpChesspiece.getType().equals("Rook")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else {
+						// Chesspiece is an enemy but not a Queen or Rook
+						isInCheck = false;
+						break;
+					}
+				}
+			}
+			checkTestColumn++;
+		}
 		return isInCheck;
 	}
 	
