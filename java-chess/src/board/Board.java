@@ -427,7 +427,7 @@ public class Board extends JPanel {
 								}
 							}
 						} else {
-							System.out.println("King would be in checkmate after movement.");
+							// King would be checkmate
 							// Restore old settings
 							isStartingMovement = !isStartingMovement;
 							// Set chesspiece back to starting position
@@ -438,6 +438,14 @@ public class Board extends JPanel {
 							} else {
 								// Delete old chesspiece
 								getFieldByID(endingFieldID).deleteChesspiece();
+							}
+							// Restore rochade settings
+							if(tmpKing.isUsingLongRochade()) {
+								tmpKing.setIsUntouched(true);
+								tmpKing.setIsUsingLongRochade(false);
+							} else if(tmpKing.isUsingShortRochade()) {
+								tmpKing.setIsUntouched(true);
+								tmpKing.setIsUsingShortRochade(false);
 							}
 						}
 					} else {
