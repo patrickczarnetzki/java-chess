@@ -1,6 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -186,8 +187,13 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) {
+						// Check if King would be exactly one field away
+						if(kingID-1==i) {
+							return true;
+						}
 					} else {
-						// Chesspiece is an enemy but not a Queen or Rook
+						// Chesspiece is an enemy but not a Queen, Rook or King
 						isInCheck = false;
 						break;
 					}
@@ -219,8 +225,12 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) { 
+						if(kingID+1==i) {
+							return true;
+						}
 					} else {
-						// Chesspiece is an enemy but not a Queen or Rook
+						// Chesspiece is an enemy but not a Queen, Rook or King
 						isInCheck = false;
 						break;
 					}
@@ -229,7 +239,7 @@ public class King extends Chesspiece {
 			checkTestColumn++;
 		}
 		// Checking vertical top
-		// Start with the first upper field above the king and go on until you reach the end of the board
+		// Start with the first field above the king and go on until you reach the end of the board
 		for(int i=kingID-8; i>=0; i=i-8) {
 			// Check if we have reached the end of the board (top border)
 			if(checkTestRow<0) {
@@ -249,6 +259,10 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) { 
+						if(kingID-8==i) {
+							return true;
+						}
 					} else {
 						// Chesspiece is an enemy but not a Queen or Rook
 						isInCheck = false;
@@ -280,6 +294,10 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) {
+						if(kingID+8==i) {
+							return true;
+						}
 					} else {
 						// Chesspiece is an enemy but not a Queen or Rook
 						isInCheck = false;
@@ -311,8 +329,20 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) {
+						if(kingID-9==i) {
+							return true;
+						}
+					} else if(tmpChesspiece.getType().equals("Pawn")) {
+						if(!isBlack()) {
+							if(kingID-9==i) {
+								return true;
+							}
+						}
+					} else if(tmpChesspiece.getType().equals("Bishop")) {
+						return true;
 					} else {
-						// Chesspiece is an enemy but not a Queen or Rook
+						// Chesspiece is an enemy but not a Queen, Rook or King
 						isInCheck = false;
 						break;
 					}
@@ -340,6 +370,18 @@ public class King extends Chesspiece {
 					if(tmpChesspiece.getType().equals("Rook")) {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
+						return true;
+					} else if(tmpChesspiece.getType().equals("King")) {
+						if(kingID-7==i) {
+							return true;
+						}
+					} else if(tmpChesspiece.getType().equals("Pawn")) {
+						if(!isBlack()) {
+							if(kingID-7==i) {
+								return true;
+							}
+						}
+					} else if(tmpChesspiece.getType().equals("Bishop")) {
 						return true;
 					} else {
 						// Chesspiece is an enemy but not a Queen or Rook
@@ -371,6 +413,18 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) {
+						if(kingID+7==i) {
+							return true;
+						}
+					} else if(tmpChesspiece.getType().equals("Pawn")) {
+						if(isBlack()) {
+							if(kingID+7==i) {
+								return true;
+							}
+						}
+					} else if(tmpChesspiece.getType().equals("Bishop")) {
+						return true;
 					} else {
 						// Chesspiece is an enemy but not a Queen or Rook
 						isInCheck = false;
@@ -401,6 +455,18 @@ public class King extends Chesspiece {
 						return true;
 					} else if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
+					} else if(tmpChesspiece.getType().equals("King")) {
+						if(kingID+9==i) {
+							return true;
+						}
+					} else if(tmpChesspiece.getType().equals("Pawn")) {
+						if(isBlack()) {
+							if(kingID+9==i) {
+								return true;
+							}
+						}
+					} else if(tmpChesspiece.getType().equals("Bishop")) {
+						return true;
 					} else {
 						// Chesspiece is an enemy but not a Queen or Rook
 						isInCheck = false;
@@ -410,12 +476,92 @@ public class King extends Chesspiece {
 			}
 			checkTestColumn++;
 		}
-		return isInCheck;
+		// Check test for Knights
+		checkTestColumn = getField().getColumn();
+		List<Integer> knightMovement = new ArrayList<Integer>();
+		// Exception handling on column 0
+		if(checkTestColumn==0) {
+			knightMovement = Arrays.asList(-15,-6,10,17);
+		// Exception handling on column 7
+		} else if(checkTestColumn==7) {
+			knightMovement = Arrays.asList(-17,-10,6,15);
+			// No exception
+		} else {
+			knightMovement = Arrays.asList(-17,-15,-10,-6,6,10,15,17);
+		}
+		for(int i=0; i<knightMovement.size(); i++) {
+			if(getField().getBoard().getFieldByID(kingID+knightMovement.get(i))!=null) {
+				// Get chesspiece on that position
+				Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(kingID+knightMovement.get(i)).getChesspiece();
+				if(tmpChesspiece!=null) {
+					// Check if it is an enemy
+					if(tmpChesspiece.isBlack()!=isBlack()) {
+						// Check if it is an Knight
+						if(tmpChesspiece.getType().equals("Knight")) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+ 		return isInCheck;
+	}
+	
+	public void setIsUntouched(boolean isUntouched) {
+		this.isUntouched = isUntouched;
 	}
 	
 	public boolean isCheckmate() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isCheckmate = false;
+		// Check if king is in check
+		if(isInCheck()) {
+			// Go through all fields and search for the first chesspiece of own color
+			for(int i=0; i<=63; i++) {
+				// Check if field is occupied
+				if(getField().getBoard().getFieldByID(i).isOccupied()) {
+					// Check if field is occupied by own color
+					if(getField().getBoard().getFieldByID(i).getChesspiece().isBlack()==isBlack()) {
+						// Check all possible ending fields of the board for valid movement
+						for(int j=0; j<=63; j++) {
+							System.out.println("Movement from field " + i + " to field " + j);
+							if(getField().getBoard().getFieldByID(i).getChesspiece().isValidMovement(getField().getBoard().getFieldByID(j))) {
+								// Restore chesspiece on new position for restoring
+								Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(j).getChesspiece();
+								if(tmpChesspiece!=null) {
+								} else {
+								}
+								// Set chesspiece to new position
+								getField().getBoard().getFieldByID(j).setChesspiece(getField().getBoard().getFieldByID(i).getChesspiece());
+								// Delete chesspiece on old position
+								getField().getBoard().getFieldByID(i).deleteChesspiece();
+								// Do the check test again
+								if(isInCheck()) {
+									// Set chesspiece to old position
+									getField().getBoard().getFieldByID(i).setChesspiece(getField().getBoard().getFieldByID(j).getChesspiece());
+									// Delete chesspiece on new position
+									getField().getBoard().getFieldByID(j).deleteChesspiece();
+									// If there was a chesspiece on new position restore it
+									if(tmpChesspiece!=null) {
+										getField().getBoard().getFieldByID(j).setChesspiece(tmpChesspiece);
+									}
+									isCheckmate = true;
+								} else {
+									// Set chesspiece to old position
+									getField().getBoard().getFieldByID(i).setChesspiece(getField().getBoard().getFieldByID(j).getChesspiece());
+									// Delete chesspiece on new position
+									getField().getBoard().getFieldByID(j).deleteChesspiece();
+									// If there was a chesspiece on new position restore it
+									if(tmpChesspiece!=null) {
+										getField().getBoard().getFieldByID(j).setChesspiece(tmpChesspiece);
+									}
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return isCheckmate;
 	}
-	
 }
