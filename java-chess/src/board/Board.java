@@ -1,18 +1,12 @@
 package board;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 import gui.menu.Checkmate;
 import gui.menu.Transformation;
 import pieces.Bishop;
@@ -35,14 +29,18 @@ public class Board extends JPanel {
 	private boolean isStartingMovement;
 	private int turn;
 	private int round;
+	private int minutes; // Used in clocks
+	private int seconds; // Used in clocks
 	
 	public Board() {
 		// Initialize variables
 		fields = new Field[10][10];
 		fieldListener = new FieldListener();
 		players = new Player[2];
-		players[0] = new Player(true,false,this);
-		players[1] = new Player(false,true,this);
+		minutes = 60;
+		seconds = 0;
+		players[0] = new Player(true,false,this,minutes,seconds); //White player
+		players[1] = new Player(false,true,this,minutes,seconds); // Black player
 		notation = new Notation(this);
 		isGameStarted = false;
 		isGamePaused = false;
@@ -56,6 +54,9 @@ public class Board extends JPanel {
 		createFields(fields);
 		// Setup chesspieces
 		setupChesspieces(fields);
+		// Start Clock Threads
+		players[0].getClock().startClock();
+		players[1].getClock().startClock();
 	}
 	
 	public void createFields(Field[][] fields) {
@@ -280,27 +281,41 @@ public class Board extends JPanel {
 		}
 	}
 	
+	public int getMinutes() {
+		return minutes;
+	}
+	
+	public int getSeconds() {
+		return seconds;
+	}
+	
 	public void newGame() {
 		// Pause the game
 		pause();
 		// Delete all chesspieces
 		deleteAllChesspieces();
-		// Create a new setup of chesspieces
-		setupChesspieces(fields);
 		// Restore starting settings
 		isGameStarted = false;
 		isGamePaused = false;
 		isStartingMovement = true;
 		turn = 0;
 		round = 0;
-		players[0] = new Player(true,false,this);
-		players[1] = new Player(false,true,this);
+		// Setup players
+		players[0].setIsPlaying(true);
+		players[1].setIsPlaying(false);
+		// Restore clocks
+		players[0].getClock().setMinutes(minutes);
+		players[0].getClock().setSeconds(seconds);
+		players[1].getClock().setMinutes(minutes);
+		players[1].getClock().setSeconds(seconds);
 		// Delete last highlight
 		for(int i=0; i<fields.length; i++) {
 			for(int j=0; j<fields[i].length; j++) {
 				fields[i][j].setBorder(null);
 			}
 		}
+		// Create a new setup of chesspieces
+		setupChesspieces(fields);
 		// Restore Notation
 	}
 		
@@ -363,9 +378,9 @@ public class Board extends JPanel {
 						// Wrong color is moving (Invalid movement)
 						} else {
 							if(players[0].isPlaying()) {
-								System.out.println("White has to move next");
-							} else if(players[1].isPlaying()) {
 								System.out.println("Black has to move next");
+							} else if(players[1].isPlaying()) {
+								System.out.println("White has to move next");
 							}
 						}
 					}
@@ -433,11 +448,10 @@ public class Board extends JPanel {
 							}							
 							// Switch to starting move
 							isStartingMovement = !isStartingMovement;
-							// Check if it was the first move of the game to start the black clock for the first time
+							// Check if it was the first move of the game
 							if(players[0].isPlaying() && !isGameStarted()) {
 								// Set game to started
 								isGameStarted = true;
-								// Start black clock
 							}
 							// Switch players and clocks
 							if(players[0].isPlaying()) {

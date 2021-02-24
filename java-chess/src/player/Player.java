@@ -9,12 +9,11 @@ public class Player {
 	private Board board;
 	private Clock clock;
 	
-	public Player(boolean isPlaying, boolean isBlack, Board board) {
+	public Player(boolean isPlaying, boolean isBlack, Board board, int clockMinutes, int clockSeconds) {
 		this.isPlaying = isPlaying;
 		this.isBlack = isBlack;
 		this.board = board;
-		this.clock = new Clock(this,60,0);
-		// TODO Auto-generated method stub
+		this.clock = new Clock(this,clockMinutes,clockSeconds);
 	}
 	
 	public boolean isPlaying() {
