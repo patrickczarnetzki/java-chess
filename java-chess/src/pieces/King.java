@@ -523,7 +523,6 @@ public class King extends Chesspiece {
 					if(getField().getBoard().getFieldByID(i).getChesspiece().isBlack()==isBlack()) {
 						// Check all possible ending fields of the board for valid movement
 						for(int j=0; j<=63; j++) {
-							System.out.println("Movement from field " + i + " to field " + j);
 							if(getField().getBoard().getFieldByID(i).getChesspiece().isValidMovement(getField().getBoard().getFieldByID(j))) {
 								// Restore chesspiece on new position for restoring
 								Chesspiece tmpChesspiece = getField().getBoard().getFieldByID(j).getChesspiece();

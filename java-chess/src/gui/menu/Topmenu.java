@@ -39,7 +39,7 @@ public class Topmenu extends JPanel {
 	}
 	
 	public void startNewGame() {
-		// TODO Auto-generated method stub
+		mainframe.getBoard().newGame();
 	}
 	
 	public void saveGame() {

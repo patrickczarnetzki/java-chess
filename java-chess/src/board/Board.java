@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import gui.menu.Checkmate;
 import gui.menu.Transformation;
 import pieces.Bishop;
 import pieces.Chesspiece;
@@ -228,23 +229,23 @@ public class Board extends JPanel {
 	public boolean isGameStarted() {
 		return isGameStarted;
 	}
-	
+		
 	public boolean isGamePaused() {
 		return isGamePaused;
 	}
-	
+		
 	public boolean isStartingMovement() {
 		return isStartingMovement;
 	}
-	
+		
 	public int getTurn() {
 		return turn;
 	}
-	
+		
 	public int getRound() {
 		return round;
 	}
-	
+		
 	public void pause() {
 		isGamePaused = true;
 	}
@@ -256,13 +257,45 @@ public class Board extends JPanel {
 	public Notation getNotation() {
 		return notation;
 	}
-	
+		
 	public Player getPlayerByColor(boolean isBlack) {
 		if(!isBlack) {
 			return players[0];
 		} else {
 			return players[1];
 		}
+	}
+	
+	public Field[][] getFields() {
+		return fields;
+	}
+	
+	public void deleteAllChesspieces() {
+		for(int i=0; i<=9; i++) {
+			for(int j=0; j<=9; j++) {
+				if(fields[i][j].getID()>=0 && fields[i][j].getID()<=63) {
+					fields[i][j].deleteChesspiece();
+				}
+			}
+		}
+	}
+	
+	public void newGame() {
+		// Pause the game
+		pause();
+		// Delete all chesspieces
+		deleteAllChesspieces();
+		// Create a new setup of chesspieces
+		setupChesspieces(fields);
+		// Restore starting settings
+		isGameStarted = false;
+		isGamePaused = false;
+		isStartingMovement = true;
+		turn = 0;
+		round = 0;
+		players[0] = new Player(true,false,this);
+		players[1] = new Player(false,true,this);
+		// Restore Notation
 	}
 		
 	private class FieldListener implements ActionListener {
@@ -418,12 +451,12 @@ public class Board extends JPanel {
 							if(!chesspiece.isBlack()) {
 								// Player is playing white, start checkmate test for black
 								if(searchAndGetKing(true).isCheckmate()) {
-									System.out.println("Black is checkmate, White wins!");
+									new Checkmate(true,Board.this);
 								}
 							} else {
 								// Player is playing black, start checkmate test for white
 								if(searchAndGetKing(false).isCheckmate()) {
-									System.out.println("White is checkmate, Black wins!");
+									new Checkmate(false,Board.this);
 								}
 							}
 						} else {
