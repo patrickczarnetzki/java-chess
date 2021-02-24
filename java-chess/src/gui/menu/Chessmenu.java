@@ -38,7 +38,11 @@ public class Chessmenu extends JPanel {
 	}
 	
 	public void resign() {
-		// TODO Auto-generated method stub
+		if(mainframe.getBoard().getPlayerByColor(false).isPlaying()) {
+			new Checkmate(false,mainframe.getBoard());
+		} else {
+			new Checkmate(true,mainframe.getBoard());
+		}
 	}
 	
 	public void askForDraw() {
