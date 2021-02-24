@@ -90,8 +90,7 @@ public class Checkmate extends JFrame {
 				System.out.println("Save Notation clicked");
 				dispose();
 			} else if(event.getSource().equals(btnClose)) {
-				System.out.println("Close Game clicked");
-				dispose();
+				System.exit(0);
 			}
 		}
 		

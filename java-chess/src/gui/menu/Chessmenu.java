@@ -38,6 +38,8 @@ public class Chessmenu extends JPanel {
 	}
 	
 	public void resign() {
+		// Pause the game
+		mainframe.getBoard().pause();
 		if(mainframe.getBoard().getPlayerByColor(false).isPlaying()) {
 			new Checkmate(false,mainframe.getBoard());
 		} else {
