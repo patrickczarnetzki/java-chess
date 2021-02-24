@@ -46,7 +46,9 @@ public class Chessmenu extends JPanel {
 	}
 	
 	public void askForDraw() {
-		// TODO Auto-generated method stub
+		// Pause the game, will be resumed in DrawDialog
+		mainframe.getBoard().pause();
+		new DrawDialog(mainframe);
 	}
 	
 	public void askForBreak() {
