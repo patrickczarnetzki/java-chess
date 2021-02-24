@@ -68,4 +68,8 @@ public class Mainframe extends JFrame {
 	public Board getBoard() {
 		return board;
 	}
+	
+	public Topmenu getTopmenu() {
+		return topmenu;
+	}
 }

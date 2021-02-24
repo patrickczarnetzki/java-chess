@@ -295,6 +295,12 @@ public class Board extends JPanel {
 		round = 0;
 		players[0] = new Player(true,false,this);
 		players[1] = new Player(false,true,this);
+		// Delete last highlight
+		for(int i=0; i<fields.length; i++) {
+			for(int j=0; j<fields[i].length; j++) {
+				fields[i][j].setBorder(null);
+			}
+		}
 		// Restore Notation
 	}
 		
