@@ -307,6 +307,10 @@ public class Board extends JPanel {
 		private int startingFieldID = 0;
 		// Used to store position of second clicked field (ending field)
 		private int endingFieldID = 0;
+		// Used to store last highlighted starting field
+		private int highlightedStartingFieldID = 0;
+		// Used to store last highlighted ending field
+		private int highlightedEndingFieldID = 0;
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -447,6 +451,13 @@ public class Board extends JPanel {
 							if(turn%2==0) {
 								round++;
 							}
+							// Highlight last move
+							getFieldByID(highlightedStartingFieldID).setBorder(null);
+							getFieldByID(highlightedEndingFieldID).setBorder(null);
+							getFieldByID(startingFieldID).setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
+							getFieldByID(endingFieldID).setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
+							highlightedStartingFieldID = startingFieldID;
+							highlightedEndingFieldID = endingFieldID;
 							// Check if opponent is checkmate now to stop the game
 							if(!chesspiece.isBlack()) {
 								// Player is playing white, start checkmate test for black
