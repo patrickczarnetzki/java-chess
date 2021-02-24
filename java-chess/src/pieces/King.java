@@ -337,6 +337,8 @@ public class King extends Chesspiece {
 						if(!isBlack()) {
 							if(kingID-9==i) {
 								return true;
+							} else {
+								break;
 							}
 						}
 					} else if(tmpChesspiece.getType().equals("Bishop")) {
@@ -379,6 +381,8 @@ public class King extends Chesspiece {
 						if(!isBlack()) {
 							if(kingID-7==i) {
 								return true;
+							} else {
+								break;
 							}
 						}
 					} else if(tmpChesspiece.getType().equals("Bishop")) {
@@ -421,6 +425,8 @@ public class King extends Chesspiece {
 						if(isBlack()) {
 							if(kingID+7==i) {
 								return true;
+							} else {
+								break;
 							}
 						}
 					} else if(tmpChesspiece.getType().equals("Bishop")) {
@@ -463,6 +469,8 @@ public class King extends Chesspiece {
 						if(isBlack()) {
 							if(kingID+9==i) {
 								return true;
+							} else {
+								break;
 							}
 						}
 					} else if(tmpChesspiece.getType().equals("Bishop")) {
