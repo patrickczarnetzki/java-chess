@@ -123,4 +123,8 @@ public class Notation extends JPanel {
 		String chessCoordinates = convertedChesspiece + convertedColumn + convertedRow;
 		return chessCoordinates;
 	}
+	
+	public List<Entry> getEntryList() {
+		return entryList;
+	}
 }
