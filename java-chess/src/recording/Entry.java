@@ -7,10 +7,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.google.gson.annotations.Expose;
+
 import pieces.Chesspiece;
 
 public class Entry extends JLabel {
+	@Expose
 	private int id;
+	@Expose
 	private String entry;
 	
 	public Entry(int id, String entry) {

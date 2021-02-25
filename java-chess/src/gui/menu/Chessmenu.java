@@ -4,8 +4,20 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
 import gui.Mainframe;
+import recording.Entry;
 
 public class Chessmenu extends JPanel {
 	private Mainframe mainframe;
@@ -57,8 +69,31 @@ public class Chessmenu extends JPanel {
 		// TODO Auto-generated method stub
 	}
 	
-	public void saveNotation() {
-		// TODO Auto-generated method stub
+	public void saveNotation() throws IOException {
+		// Pause the game
+		mainframe.getBoard().pause();
+		// Get entry list
+		List<Entry> entryList = mainframe.getBoard().getNotation().getEntryList();
+		// Using Gson to create a Json file
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		JsonArray entryArray = new JsonArray();
+		// Go through entryList and store Entries in JsonArray
+		for(int i=0; i<entryList.size(); i++) {
+			entryArray.add(gson.toJson(entryList.get(i)));
+		}
+		// Open save dialog
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Save Notation to...");
+		// Check which option user choosed
+		int userSelection = fileChooser.showSaveDialog(mainframe);
+		if(userSelection==JFileChooser.APPROVE_OPTION) {
+			// User choosed a place and clicked on save
+			Writer writer = new FileWriter(fileChooser.getSelectedFile());
+			writer.write(entryArray.toString());
+			writer.close();
+		}
+		// Resume the game
+		mainframe.getBoard().resume();
 	}
 	
 	private class ChessmenuButtonListener implements ActionListener {
@@ -71,7 +106,12 @@ public class Chessmenu extends JPanel {
 			} else if(event.getSource().equals(btnBreak)) {
 				askForBreak();
 			} else if(event.getSource().equals(btnSaveNote)) {
-				saveNotation();
+				try {
+					saveNotation();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
