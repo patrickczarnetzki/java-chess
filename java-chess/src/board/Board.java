@@ -17,6 +17,7 @@ import pieces.Pawn;
 import pieces.Queen;
 import pieces.Rook;
 import player.Player;
+import recording.Entry;
 import recording.Notation;
 
 public class Board extends JPanel {
@@ -356,7 +357,6 @@ public class Board extends JPanel {
 					if(chesspiece!=null) {
 						// Check for first move by black (Invalid movement, white has to start the game)
 						if(chesspiece.isBlack() && !isGameStarted()) {
-							System.out.println("White has to start the match");
 						// Check for first move of the match by white (valid move)
 						} else if(!chesspiece.isBlack() && players[0].isPlaying() && !isGameStarted()) {
 							// Delete chesspiece on starting position
@@ -378,9 +378,9 @@ public class Board extends JPanel {
 						// Wrong color is moving (Invalid movement)
 						} else {
 							if(players[0].isPlaying()) {
-								System.out.println("Black has to move next");
-							} else if(players[1].isPlaying()) {
 								System.out.println("White has to move next");
+							} else if(players[1].isPlaying()) {
+								System.out.println("Black has to move next");
 							}
 						}
 					}
@@ -464,7 +464,7 @@ public class Board extends JPanel {
 								players[1].setIsPlaying(false);
 							}
 							// Add movement to notation component
-							
+							notation.addEntry(endingFieldID, chesspiece);
 							// One turn is over (Turn = One move of white or black player)
 							turn++;
 							// Check if round is over (Round = Two moves, one move of each player (black and white)
