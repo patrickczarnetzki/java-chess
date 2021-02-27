@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -32,6 +34,8 @@ public class Board extends JPanel {
 	private int round;
 	private int minutes; // Used in clocks
 	private int seconds; // Used in clocks
+	private String fieldColorOne;
+	private String fieldColorTwo;
 	
 	public Board() {
 		// Initialize variables
@@ -40,6 +44,8 @@ public class Board extends JPanel {
 		players = new Player[2];
 		minutes = 60;
 		seconds = 0;
+		fieldColorOne = "#DDE2C6";
+		fieldColorTwo = "#93827F";
 		players[0] = new Player(true,false,this,minutes,seconds); //White player
 		players[1] = new Player(false,true,this,minutes,seconds); // Black player
 		notation = new Notation(this);
@@ -111,7 +117,7 @@ public class Board extends JPanel {
 					// Initialize playing fields (8x8 of two different colors)
 					if(iteratorColor%2==0) {
 						fields[r][c] = new Field(this,true,null,r-1,c-1,iteratorID,false);
-						fields[r][c].setBackground(Color.decode("#DDE2C6"));
+						fields[r][c].setBackground(Color.decode(getFieldColorOne()));
 						// Add ActionListener
 						fields[r][c].addActionListener(fieldListener);
 						// Add to GridLayout
@@ -121,7 +127,7 @@ public class Board extends JPanel {
 						iteratorID++;
 					} else {
 						fields[r][c] = new Field(this,false,null,r-1,c-1,iteratorID,false);
-						fields[r][c].setBackground(Color.decode("#93827F"));
+						fields[r][c].setBackground(Color.decode(getFieldColorTwo()));
 						// Add ActionListener
 						fields[r][c].addActionListener(fieldListener);
 						// Add to GridLayout
@@ -290,6 +296,51 @@ public class Board extends JPanel {
 		return seconds;
 	}
 	
+	public String getFieldColorOne() {
+		return fieldColorOne;
+	}
+	
+	public String getFieldColorTwo() {
+		return fieldColorTwo;
+	}
+	
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+	
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
+	}
+	
+	public void setFirstColor(String color) {
+		this.fieldColorOne = color;
+	}
+	
+	public void setSecondColor(String color) {
+		this.fieldColorTwo = color;
+	}
+	
+	public void setFieldColor(String colorOne, String colorTwo) {
+		for(int i=0; i<fields.length; i++) {
+			for(int j=0; j<fields[i].length; j++) {
+				if(fields[i][j].getID()>=0 && fields[i][j].getID()<=63) {
+					if(fields[i][j].isBlack()) {
+						fields[i][j].setBackground(Color.decode(colorOne));
+					} else {
+						fields[i][j].setBackground(Color.decode(colorTwo));
+					}
+				}
+			}
+		}
+	}
+	
+	public void setTime(int minutes, int seconds) {
+		players[0].getClock().setMinutes(minutes);
+		players[0].getClock().setSeconds(seconds);
+		players[1].getClock().setMinutes(minutes);
+		players[1].getClock().setSeconds(seconds);
+	}
+	
 	public void newGame() {
 		// Pause the game
 		pause();
@@ -318,6 +369,7 @@ public class Board extends JPanel {
 		// Create a new setup of chesspieces
 		setupChesspieces(fields);
 		// Restore Notation
+		notation.clearEntryList();
 	}
 		
 	private class FieldListener implements ActionListener {

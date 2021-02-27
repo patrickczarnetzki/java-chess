@@ -20,7 +20,7 @@ import gui.menu.Topmenu;
 public class Mainframe extends JFrame {
 	
 	private Topmenu topmenu;
-	private Chessmenu chessmenu;
+	private static Chessmenu chessmenu;
 	private Board board;
 
 	public Mainframe() {
@@ -71,5 +71,9 @@ public class Mainframe extends JFrame {
 	
 	public Topmenu getTopmenu() {
 		return topmenu;
+	}
+	
+	public static Chessmenu getChessmenu() {
+		return chessmenu;
 	}
 }

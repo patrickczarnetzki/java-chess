@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import board.Board;
+import gui.Mainframe;
 
 public class Checkmate extends JFrame {
 	
@@ -87,7 +89,11 @@ public class Checkmate extends JFrame {
 				System.out.println("Load Game clicked");
 				dispose();
 			} else if(event.getSource().equals(btnSaveNotation)) {
-				System.out.println("Save Notation clicked");
+				try {
+					Mainframe.getChessmenu().saveNotation();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				dispose();
 			} else if(event.getSource().equals(btnClose)) {
 				System.exit(0);

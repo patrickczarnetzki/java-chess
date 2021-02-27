@@ -22,6 +22,7 @@ public class Notation extends JPanel {
 	private List<Entry> entryList;
 	private int entryIDIterator;
 	private JPanel listPanel;
+	private JScrollPane listScrollPane;
 	
 	public Notation(Board board) {
 		// Initialize components and variables
@@ -48,7 +49,7 @@ public class Notation extends JPanel {
 		listPanel.setBackground(Color.decode("#657180"));
 		listPanel.setBorder(null);
 		// Create a JScrollPane
-		JScrollPane listScrollPane = new JScrollPane(listPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		listScrollPane = new JScrollPane(listPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		// Styling JScrollPane
 		listScrollPane.setBorder(null);
 		listScrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
@@ -82,6 +83,16 @@ public class Notation extends JPanel {
 			entryList.get(entryList.size()-1).setEntry(entryList.get(entryList.size()-1).getEntry() + "     " + getChessCoordinates(endingColumn,endingRow,chesspiece));
 			entryIDIterator++;
 		}
+	}
+	
+	public void setEntryList(List<Entry> entryList) {
+		this.entryList = entryList;
+	}
+	
+	public void clearEntryList() {
+		entryIDIterator = 1;
+		entryList.clear();
+		listPanel.removeAll();
 	}
 
 	public String getChessCoordinates(int column, int row, Chesspiece chesspiece) {

@@ -100,4 +100,8 @@ public class Field extends JButton {
 	public Board getBoard() {
 		return board;
 	}
+	
+	public boolean isBlack() {
+		return isBlack;
+	}
 }

@@ -51,7 +51,7 @@ public class Topmenu extends JPanel {
 	}
 	
 	public void openOptions() {
-		// TODO Auto-generated method stub
+		new Options(mainframe.getBoard());
 	}
 	
 	private class TopmenuButtonListener implements ActionListener {
@@ -64,7 +64,13 @@ public class Topmenu extends JPanel {
 			} else if(event.getSource().equals(btnLoadGame)) {
 				loadGame();
 			} else if(event.getSource().equals(btnOptions)) {
-				openOptions();
+				// Options can only changed for not started games
+				// You have to start a new game to change settings
+				if(!mainframe.getBoard().isGameStarted()) {
+					openOptions();
+				} else {
+					System.out.println("Options cannot changed while game is started");
+				}
 			}
 		}
 	}

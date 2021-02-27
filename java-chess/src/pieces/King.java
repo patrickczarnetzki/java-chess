@@ -325,9 +325,7 @@ public class King extends Chesspiece {
 				} else {
 					// It is occupied by enemy color
 					// Check for Rook and Queen on that position (Would be check)
-					if(tmpChesspiece.getType().equals("Rook")) {
-						return true;
-					} else if(tmpChesspiece.getType().equals("Queen")) {
+					if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
 					} else if(tmpChesspiece.getType().equals("King")) {
 						if(kingID-9==i) {
@@ -369,9 +367,7 @@ public class King extends Chesspiece {
 				} else {
 					// It is occupied by enemy color
 					// Check for Rook and Queen on that position (Would be check)
-					if(tmpChesspiece.getType().equals("Rook")) {
-						return true;
-					} else if(tmpChesspiece.getType().equals("Queen")) {
+					if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
 					} else if(tmpChesspiece.getType().equals("King")) {
 						if(kingID-7==i) {
@@ -413,9 +409,7 @@ public class King extends Chesspiece {
 				} else {
 					// It is occupied by enemy color
 					// Check for Rook and Queen on that position (Would be check)
-					if(tmpChesspiece.getType().equals("Rook")) {
-						return true;
-					} else if(tmpChesspiece.getType().equals("Queen")) {
+					if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
 					} else if(tmpChesspiece.getType().equals("King")) {
 						if(kingID+7==i) {
@@ -457,9 +451,7 @@ public class King extends Chesspiece {
 				} else {
 					// It is occupied by enemy color
 					// Check for Rook and Queen on that position (Would be check)
-					if(tmpChesspiece.getType().equals("Rook")) {
-						return true;
-					} else if(tmpChesspiece.getType().equals("Queen")) {
+					if(tmpChesspiece.getType().equals("Queen")) {
 						return true;
 					} else if(tmpChesspiece.getType().equals("King")) {
 						if(kingID+9==i) {
