@@ -29,6 +29,7 @@ public class Board extends JPanel {
 	private FieldListener fieldListener;
 	private boolean isGameStarted;
 	private boolean isGamePaused;
+	private boolean isGameInBreak;
 	private boolean isStartingMovement;
 	private int turn;
 	private int round;
@@ -51,6 +52,7 @@ public class Board extends JPanel {
 		notation = new Notation(this);
 		isGameStarted = false;
 		isGamePaused = false;
+		isGameInBreak = false;
 		isStartingMovement = true;
 		turn = 0;
 		round = 0;
@@ -332,6 +334,14 @@ public class Board extends JPanel {
 				}
 			}
 		}
+	}
+	
+	public boolean isGameInBreak() {
+		return isGameInBreak;
+	}
+	
+	public void setIsGameInBreak(boolean isGameInBreak) {
+		this.isGameInBreak = isGameInBreak;
 	}
 	
 	public void setTime(int minutes, int seconds) {
