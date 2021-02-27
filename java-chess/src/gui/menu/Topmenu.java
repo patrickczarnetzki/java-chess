@@ -58,15 +58,22 @@ public class Topmenu extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource().equals(btnNewGame)) {
-				startNewGame();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					startNewGame();
+				}
 			} else if(event.getSource().equals(btnSaveGame)) {
-				saveGame();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					saveGame();
+				}
 			} else if(event.getSource().equals(btnLoadGame)) {
-				loadGame();
+				// Check for running break
+				if(!mainframe.getBoard().isGameInBreak()) {
+					loadGame();
+				}
 			} else if(event.getSource().equals(btnOptions)) {
 				// Options can only changed for not started games
 				// You have to start a new game to change settings
-				if(!mainframe.getBoard().isGameStarted()) {
+				if(!mainframe.getBoard().isGameStarted() && !mainframe.getBoard().isGameInBreak()) {
 					openOptions();
 				} else {
 					System.out.println("Options cannot changed while game is started");

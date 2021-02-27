@@ -93,6 +93,7 @@ public class Notation extends JPanel {
 		entryIDIterator = 1;
 		entryList.clear();
 		listPanel.removeAll();
+		listPanel.repaint();
 	}
 
 	public String getChessCoordinates(int column, int row, Chesspiece chesspiece) {

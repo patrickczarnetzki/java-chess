@@ -66,7 +66,9 @@ public class Chessmenu extends JPanel {
 	}
 	
 	public void askForBreak() {
-		// TODO Auto-generated method stub
+		// Pause the game, will be resumed in BreakDialog
+		mainframe.getBoard().pause();
+		new BreakDialog(mainframe);
 	}
 	
 	public void saveNotation() throws IOException {
@@ -92,24 +94,31 @@ public class Chessmenu extends JPanel {
 			writer.write(entryArray.toString());
 			writer.close();
 		}
-		// Resume the game
-		mainframe.getBoard().resume();
+		if(!mainframe.getBoard().isGameInBreak()) {
+			// Resume the game
+			mainframe.getBoard().resume();
+		}
 	}
 	
 	private class ChessmenuButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource().equals(btnResign)) {
-				resign();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					resign();
+				}
 			} else if(event.getSource().equals(btnDraw)) {
-				askForDraw();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					askForDraw();
+				}
 			} else if(event.getSource().equals(btnBreak)) {
-				askForBreak();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					askForBreak();
+				}
 			} else if(event.getSource().equals(btnSaveNote)) {
 				try {
 					saveNotation();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
