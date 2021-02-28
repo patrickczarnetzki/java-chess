@@ -11,6 +11,7 @@ public abstract class Chesspiece {
 	private Player player;
 	private ImageIcon icon;
 	private String type;
+	private boolean hasBeatenEnemy;
 	
 	public Chesspiece(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
 		this.field = field;
@@ -18,6 +19,7 @@ public abstract class Chesspiece {
 		this.player = player;
 		this.icon = icon;
 		this.type = type;
+		hasBeatenEnemy = false;
 	}
 	
 	public Field getField() {
@@ -46,5 +48,13 @@ public abstract class Chesspiece {
 	
 	public boolean isValidMovement(Field endingField) {
 		return true;
+	}
+
+	public boolean hasBeatenEnemy() {
+		return hasBeatenEnemy;
+	}
+	
+	public void setHasBeatenEnemy(boolean hasBeatenEnemy) {
+		this.hasBeatenEnemy = hasBeatenEnemy;
 	}
 }

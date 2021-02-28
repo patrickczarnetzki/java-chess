@@ -93,6 +93,7 @@ public class Pawn extends Chesspiece {
 			// Field was occupied
 			// Check for opponent chesspiece on ending field
 			if(endingField.getChesspiece().isBlack()!=isBlack()) {
+				setHasBeatenEnemy(true);
 				// Check playing color to choose right direction (white pawns move from bottom to top and black pawns from top to bottom)
 				if(!isBlack()) {
 					// White pawn is attacking
@@ -146,6 +147,7 @@ public class Pawn extends Chesspiece {
 				return true;
 			}
 		}
+		setHasBeatenEnemy(false);
 		return false;
 	}
 	
@@ -219,6 +221,7 @@ public class Pawn extends Chesspiece {
 							case 63: validMovement.add(7); validMovement.add(9); break;
 							}
 							isUsingEnPassant = true;
+							setHasBeatenEnemy(true);
 						}
 					}
 				}

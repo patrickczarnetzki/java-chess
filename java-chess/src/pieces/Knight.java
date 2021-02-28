@@ -56,6 +56,12 @@ public class Knight extends Chesspiece {
 		// Check for a match
 		for(int i=0; i<validMovement.size(); i++) {
 			if((startingFieldID+validMovement.get(i))==endingFieldID) {
+				// Important to check if beating sound should played
+				if(endingField.isOccupied()) {
+					setHasBeatenEnemy(true);
+				} else {
+					setHasBeatenEnemy(false);
+				}
 				return true;
 			}
 		}
