@@ -4,8 +4,15 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -381,6 +388,15 @@ public class Board extends JPanel {
 		// Restore Notation
 		notation.clearEntryList();
 	}
+	
+	public void playSound(String fileURL) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		String soundFile = fileURL;    
+		AudioInputStream audioInputStream;
+		audioInputStream = AudioSystem.getAudioInputStream(new File(soundFile).getAbsoluteFile());
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioInputStream);
+		clip.start();
+	}
 		
 	private class FieldListener implements ActionListener {
 		// Used to store the chesspiece on the clicked field if there is a chesspiece
@@ -540,6 +556,19 @@ public class Board extends JPanel {
 							getFieldByID(endingFieldID).setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
 							highlightedStartingFieldID = startingFieldID;
 							highlightedEndingFieldID = endingFieldID;
+							// Start sound if enemy was beaten
+							if(chesspiece.hasBeatenEnemy()) {
+								try {
+									playSound("src/sound/beat.wav");
+									chesspiece.setHasBeatenEnemy(false);
+								} catch (UnsupportedAudioFileException e) {
+									e.printStackTrace();
+								} catch (IOException e) {
+									e.printStackTrace();
+								} catch (LineUnavailableException e) {
+									e.printStackTrace();
+								}
+							}
 							// Check if opponent is checkmate now to stop the game
 							if(!chesspiece.isBlack()) {
 								// Player is playing white, start checkmate test for black

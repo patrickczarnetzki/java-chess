@@ -44,6 +44,7 @@ public class Bishop extends Chesspiece {
 					// Field is occupied by opponent color and it is the ending field
 					} else {
 						validMovement.add(i);
+						setHasBeatenEnemy(true);
 						break;
 					}
 				} else {
@@ -70,6 +71,7 @@ public class Bishop extends Chesspiece {
 					// Field is occupied by opponent color and it is the ending field
 					} else {
 						validMovement.add(i);
+						setHasBeatenEnemy(true);
 						break;
 					}
 				} else {
@@ -96,6 +98,7 @@ public class Bishop extends Chesspiece {
 					// Field is occupied by opponent and it is the ending field
 					} else {
 						validMovement.add(i);
+						setHasBeatenEnemy(true);
 						break;
 					}
 				} else {
@@ -122,6 +125,7 @@ public class Bishop extends Chesspiece {
 					// Field is occupied by opponent color and it is the ending field
 					} else {
 						validMovement.add(i);
+						setHasBeatenEnemy(true);
 						break;
 					}
 				} else {

@@ -125,6 +125,7 @@ public class King extends Chesspiece {
 					// Field is occupied by opponent color
 					if((validMovement.get(i)+startingFieldID)==endingFieldID) {
 						isUntouched = false;
+						setHasBeatenEnemy(true);
 						return true;
 					}
 				}
@@ -132,6 +133,7 @@ public class King extends Chesspiece {
 				// Field is not occupied
 				if((validMovement.get(i)+startingFieldID)==endingFieldID) {
 					isUntouched = false;
+					setHasBeatenEnemy(false);
 					return true;
 				}
 			}
