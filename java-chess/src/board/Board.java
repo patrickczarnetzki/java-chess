@@ -16,6 +16,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import gui.Mainframe;
 import gui.menu.Checkmate;
 import gui.menu.Transformation;
 import pieces.Bishop;
@@ -30,6 +32,7 @@ import recording.Entry;
 import recording.Notation;
 
 public class Board extends JPanel {
+	private Mainframe mainframe;
 	private Player[] players;
 	private Notation notation;
 	private Field[][] fields;
@@ -45,8 +48,9 @@ public class Board extends JPanel {
 	private String fieldColorOne;
 	private String fieldColorTwo;
 	
-	public Board() {
+	public Board(Mainframe mainframe) {
 		// Initialize variables
+		this.mainframe = mainframe;
 		fields = new Field[10][10];
 		fieldListener = new FieldListener();
 		players = new Player[2];
@@ -387,6 +391,12 @@ public class Board extends JPanel {
 		setupChesspieces(fields);
 		// Restore Notation
 		notation.clearEntryList();
+		// Clear lost pieces component
+		mainframe.getTopmenu().getLostPieces().clearLostChesspieces();
+	}
+	
+	public Mainframe getMainframe() {
+		return mainframe;
 	}
 	
 	public void playSound(String fileURL) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -556,10 +566,12 @@ public class Board extends JPanel {
 							getFieldByID(endingFieldID).setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
 							highlightedStartingFieldID = startingFieldID;
 							highlightedEndingFieldID = endingFieldID;
-							// Start sound if enemy was beaten
+							// Start sound if enemy was beaten and add beaten chesspiece to lost pieces component
 							if(chesspiece.hasBeatenEnemy()) {
 								try {
 									playSound("src/sound/beat.wav");
+									// Add to lost pieces component
+									getMainframe().getTopmenu().getLostPieces().addLostChesspiece(chesspieceClickedField);
 									chesspiece.setHasBeatenEnemy(false);
 								} catch (UnsupportedAudioFileException e) {
 									e.printStackTrace();
