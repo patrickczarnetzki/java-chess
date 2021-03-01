@@ -37,7 +37,7 @@ public class Mainframe extends JFrame {
 		topmenu = new Topmenu(this);
 		getContentPane().add(topmenu,BorderLayout.NORTH);
 		// Center Component (Board)
-		board = new Board();
+		board = new Board(this);
 		getContentPane().add(board,BorderLayout.CENTER);
 		// East Component (Recording Panel)
 		JPanel recordingPanel = new JPanel(new BorderLayout());

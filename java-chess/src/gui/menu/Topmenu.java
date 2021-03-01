@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import gui.Mainframe;
+import pieces.Chesspiece;
+import recording.LostPieces;
 
 public class Topmenu extends JPanel {
 	private Mainframe mainframe;
@@ -13,6 +15,7 @@ public class Topmenu extends JPanel {
 	private MenuButton btnSaveGame;
 	private MenuButton btnLoadGame;
 	private MenuButton btnOptions;
+	private LostPieces lostPieces;
 	
 	public Topmenu(Mainframe mainframe) {
 		// Initialize Mainframe
@@ -36,6 +39,14 @@ public class Topmenu extends JPanel {
 		add(btnSaveGame);
 		add(btnLoadGame);
 		add(btnOptions);
+		// Initialize lost pieces component to store lost chesspieces
+		lostPieces = new LostPieces();
+		// Add lost pieces component to topmenu
+		add(lostPieces);
+	}
+	
+	public LostPieces getLostPieces() {
+		return lostPieces;
 	}
 	
 	public void startNewGame() {
