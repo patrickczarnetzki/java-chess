@@ -6,12 +6,17 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.google.gson.annotations.Expose;
+
 import gui.menu.Checkmate;
 import player.Player;
 
 public class Clock extends JPanel {
 	private Player player;
+	@Expose
 	private int minutes;
+	@Expose
 	private int seconds;
 	private JLabel time;
 	private ClockThread clockThread;

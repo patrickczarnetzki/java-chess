@@ -6,13 +6,18 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import com.google.gson.annotations.Expose;
+
 import board.Field;
 import player.Player;
 
 public class Pawn extends Chesspiece {
+	@Expose
 	private boolean isUntouched;
+	@Expose
 	private boolean isEnPassant; // Can be beaten by en-passant
 	private boolean isTransforming;
+	@Expose
 	private boolean isUsingEnPassant; // Has beaten opponent Pawn by en-passant move
 	Pawn enemyPawn; // Stores the enemy Pawn for en-passant
 

@@ -8,20 +8,32 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.google.gson.annotations.Expose;
+
 import pieces.Chesspiece;
 
 public class LostPieces extends JPanel {
 	
 	// Integer values
+	@Expose
 	private int lostPawnsWhite = 0;
+	@Expose
 	private int lostPawnsBlack = 0;
+	@Expose
 	private int lostRooksWhite = 0;
+	@Expose
 	private int lostRooksBlack = 0;
+	@Expose
 	private int lostKnightsWhite = 0;
+	@Expose
 	private int lostKnightsBlack = 0;
+	@Expose
 	private int lostBishopsWhite = 0;
+	@Expose
 	private int lostBishopsBlack = 0;
+	@Expose
 	private int lostQueensWhite = 0;
+	@Expose
 	private int lostQueensBlack = 0;
 	// Label values
 	private JLabel lblWhitePawnsValue = new JLabel(Integer.toString(lostPawnsWhite));

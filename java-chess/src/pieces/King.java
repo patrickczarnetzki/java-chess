@@ -6,13 +6,19 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import com.google.gson.annotations.Expose;
+
 import board.Field;
 import player.Player;
 
 public class King extends Chesspiece {
+	@Expose
 	private boolean isUntouched;
+	@Expose
 	private boolean isUsingShortRochade;
+	@Expose
 	private boolean isUsingLongRochade;
+	@Expose
 	private boolean isInCheck;
 	
 	public King(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
