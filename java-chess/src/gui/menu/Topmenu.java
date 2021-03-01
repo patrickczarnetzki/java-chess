@@ -4,7 +4,17 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+
 import gui.Mainframe;
 import pieces.Chesspiece;
 import recording.LostPieces;
@@ -15,6 +25,7 @@ public class Topmenu extends JPanel {
 	private MenuButton btnSaveGame;
 	private MenuButton btnLoadGame;
 	private MenuButton btnOptions;
+	@Expose
 	private LostPieces lostPieces;
 	
 	public Topmenu(Mainframe mainframe) {
@@ -53,8 +64,25 @@ public class Topmenu extends JPanel {
 		mainframe.getBoard().newGame();
 	}
 	
-	public void saveGame() {
-		// TODO Auto-generated method stub
+	public void saveGame() throws IOException {
+		// Pause the game
+		mainframe.getBoard().pause();
+		// Gson serialization
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		String gsonString = gson.toJson(mainframe.getBoard().getFields());
+		// Open save dialog
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Save Game to...");
+		// Check which option user choosed
+		int userSelection = fileChooser.showSaveDialog(mainframe);
+		if(userSelection==JFileChooser.APPROVE_OPTION) {
+			// User choosed a place and clicked on save
+			Writer writer = new FileWriter(fileChooser.getSelectedFile());
+			writer.write(gsonString);
+			writer.close();
+		}
+		// Resume game
+		mainframe.getBoard().resume();
 	}
 	
 	public void loadGame() {
@@ -74,7 +102,11 @@ public class Topmenu extends JPanel {
 				}
 			} else if(event.getSource().equals(btnSaveGame)) {
 				if(!mainframe.getBoard().isGameInBreak()) {
-					saveGame();
+					try {
+						saveGame();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			} else if(event.getSource().equals(btnLoadGame)) {
 				// Check for running break

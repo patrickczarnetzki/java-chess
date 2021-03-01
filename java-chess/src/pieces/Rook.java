@@ -3,10 +3,14 @@ package pieces;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+
+import com.google.gson.annotations.Expose;
+
 import board.Field;
 import player.Player;
 
 public class Rook extends Chesspiece {
+	@Expose
 	private boolean isUntouched;
 	
 	public Rook(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {

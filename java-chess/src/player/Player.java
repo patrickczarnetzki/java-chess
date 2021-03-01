@@ -1,12 +1,16 @@
 package player;
 
+import com.google.gson.annotations.Expose;
+
 import board.Board;
 import recording.Clock;
 
 public class Player {
+	@Expose
 	private boolean isPlaying;
 	private boolean isBlack;
 	private Board board;
+	@Expose
 	private Clock clock;
 	
 	public Player(boolean isPlaying, boolean isBlack, Board board, int clockMinutes, int clockSeconds) {

@@ -2,15 +2,20 @@ package pieces;
 
 import javax.swing.ImageIcon;
 
+import com.google.gson.annotations.Expose;
+
 import board.Field;
 import player.Player;
 
 public abstract class Chesspiece {
 	private Field field;
+	@Expose
+	private String type;
+	@Expose
 	private boolean isBlack;
+	@Expose
 	private Player player;
 	private ImageIcon icon;
-	private String type;
 	private boolean hasBeatenEnemy;
 	
 	public Chesspiece(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
