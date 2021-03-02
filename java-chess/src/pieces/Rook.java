@@ -22,6 +22,10 @@ public class Rook extends Chesspiece {
 		return isUntouched;
 	}
 	
+	public void setIsUntouched(boolean isUntouched) {
+		this.isUntouched = isUntouched;
+	}
+	
 	@Override
 	public boolean isValidMovement(Field endingField) {
 		// Store IDs of starting and ending field
@@ -161,7 +165,6 @@ public class Rook extends Chesspiece {
 		// Check for a match (Valid movement)
 		for(int i=0; i<validMovement.size(); i++) {
 			if(validMovement.get(i)==endingFieldID) {
-				isUntouched = false;
 				return true;
 			}
 		}

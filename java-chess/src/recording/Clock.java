@@ -14,9 +14,7 @@ import player.Player;
 
 public class Clock extends JPanel {
 	private Player player;
-	@Expose
 	private int minutes;
-	@Expose
 	private int seconds;
 	private JLabel time;
 	private ClockThread clockThread;
@@ -121,5 +119,13 @@ public class Clock extends JPanel {
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
 		time.setText(minutes + " : " + seconds);
+	}
+	
+	public int getMinutes() {
+		return minutes;
+	}
+	
+	public int getSeconds() {
+		return seconds;
 	}
 }

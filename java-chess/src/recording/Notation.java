@@ -139,4 +139,16 @@ public class Notation extends JPanel {
 	public List<Entry> getEntryList() {
 		return entryList;
 	}
+	
+	public void setEntryIDIterator(int entryIDIterator) {
+		this.entryIDIterator = entryIDIterator;
+	}
+	
+	public JPanel getListPanel() {
+		return listPanel;
+	}
+	
+	public int getEntryIDIterator() {
+		return entryIDIterator;
+	}
 }

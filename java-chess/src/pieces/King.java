@@ -130,7 +130,6 @@ public class King extends Chesspiece {
 				} else {
 					// Field is occupied by opponent color
 					if((validMovement.get(i)+startingFieldID)==endingFieldID) {
-						isUntouched = false;
 						setHasBeatenEnemy(true);
 						return true;
 					}
@@ -138,7 +137,6 @@ public class King extends Chesspiece {
 			} else {
 				// Field is not occupied
 				if((validMovement.get(i)+startingFieldID)==endingFieldID) {
-					isUntouched = false;
 					setHasBeatenEnemy(false);
 					return true;
 				}
@@ -165,6 +163,10 @@ public class King extends Chesspiece {
 	
 	public void setIsUsingLongRochade(boolean isUsingLongRochade) {
 		this.isUsingLongRochade = isUsingLongRochade;
+	}
+	
+	public void setIsInCheck(boolean isInCheck) {
+		this.isInCheck = isInCheck;
 	}
 	
 	public boolean isInCheck() {
