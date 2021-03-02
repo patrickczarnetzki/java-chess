@@ -10,7 +10,6 @@ public class Player {
 	private boolean isPlaying;
 	private boolean isBlack;
 	private Board board;
-	@Expose
 	private Clock clock;
 	
 	public Player(boolean isPlaying, boolean isBlack, Board board, int clockMinutes, int clockSeconds) {

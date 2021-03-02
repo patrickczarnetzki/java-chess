@@ -15,25 +15,15 @@ import pieces.Chesspiece;
 public class LostPieces extends JPanel {
 	
 	// Integer values
-	@Expose
 	private int lostPawnsWhite = 0;
-	@Expose
 	private int lostPawnsBlack = 0;
-	@Expose
 	private int lostRooksWhite = 0;
-	@Expose
 	private int lostRooksBlack = 0;
-	@Expose
 	private int lostKnightsWhite = 0;
-	@Expose
 	private int lostKnightsBlack = 0;
-	@Expose
 	private int lostBishopsWhite = 0;
-	@Expose
 	private int lostBishopsBlack = 0;
-	@Expose
 	private int lostQueensWhite = 0;
-	@Expose
 	private int lostQueensBlack = 0;
 	// Label values
 	private JLabel lblWhitePawnsValue = new JLabel(Integer.toString(lostPawnsWhite));
@@ -145,4 +135,96 @@ public class LostPieces extends JPanel {
 		lblBlackQueensValue.setText(Integer.toString(lostQueensBlack));
 	}
 	
+	public void refreshLostChesspieces() {
+		lblWhitePawnsValue.setText(Integer.toString(lostPawnsWhite));
+		lblBlackPawnsValue.setText(Integer.toString(lostPawnsBlack));
+		lblWhiteRooksValue.setText(Integer.toString(lostRooksWhite));
+		lblBlackRooksValue.setText(Integer.toString(lostRooksBlack));
+		lblWhiteKnightsValue.setText(Integer.toString(lostKnightsWhite));
+		lblBlackKnightsValue.setText(Integer.toString(lostKnightsBlack));
+		lblWhiteBishopsValue.setText(Integer.toString(lostBishopsWhite));
+		lblBlackBishopsValue.setText(Integer.toString(lostBishopsBlack));
+		lblWhiteQueensValue.setText(Integer.toString(lostQueensWhite));
+		lblBlackQueensValue.setText(Integer.toString(lostQueensBlack));
+	}
+
+	public int getLostPawnsWhite() {
+		return lostPawnsWhite;
+	}
+
+	public void setLostPawnsWhite(int lostPawnsWhite) {
+		this.lostPawnsWhite = lostPawnsWhite;
+	}
+
+	public int getLostPawnsBlack() {
+		return lostPawnsBlack;
+	}
+
+	public void setLostPawnsBlack(int lostPawnsBlack) {
+		this.lostPawnsBlack = lostPawnsBlack;
+	}
+
+	public int getLostRooksWhite() {
+		return lostRooksWhite;
+	}
+
+	public void setLostRooksWhite(int lostRooksWhite) {
+		this.lostRooksWhite = lostRooksWhite;
+	}
+
+	public int getLostRooksBlack() {
+		return lostRooksBlack;
+	}
+
+	public void setLostRooksBlack(int lostRooksBlack) {
+		this.lostRooksBlack = lostRooksBlack;
+	}
+
+	public int getLostKnightsWhite() {
+		return lostKnightsWhite;
+	}
+
+	public void setLostKnightsWhite(int lostKnightsWhite) {
+		this.lostKnightsWhite = lostKnightsWhite;
+	}
+
+	public int getLostKnightsBlack() {
+		return lostKnightsBlack;
+	}
+
+	public void setLostKnightsBlack(int lostKnightsBlack) {
+		this.lostKnightsBlack = lostKnightsBlack;
+	}
+
+	public int getLostBishopsWhite() {
+		return lostBishopsWhite;
+	}
+
+	public void setLostBishopsWhite(int lostBishopsWhite) {
+		this.lostBishopsWhite = lostBishopsWhite;
+	}
+
+	public int getLostBishopsBlack() {
+		return lostBishopsBlack;
+	}
+
+	public void setLostBishopsBlack(int lostBishopsBlack) {
+		this.lostBishopsBlack = lostBishopsBlack;
+	}
+
+	public int getLostQueensWhite() {
+		return lostQueensWhite;
+	}
+
+	public void setLostQueensWhite(int lostQueensWhite) {
+		this.lostQueensWhite = lostQueensWhite;
+	}
+
+	public int getLostQueensBlack() {
+		return lostQueensBlack;
+	}
+
+	public void setLostQueensBlack(int lostQueensBlack) {
+		this.lostQueensBlack = lostQueensBlack;
+	}
 }

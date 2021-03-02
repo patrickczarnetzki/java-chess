@@ -34,6 +34,10 @@ public class Pawn extends Chesspiece {
 		return isEnPassant;
 	}
 	
+	public void setIsEnPassant(boolean isEnPassant) {
+		this.isEnPassant = isEnPassant;
+	}
+	
 	public boolean isTransforming() {
 		return isTransforming;
 	}
@@ -144,16 +148,20 @@ public class Pawn extends Chesspiece {
 				} else if(isBlack() && endingRow==7) {
 					isTransforming = true;
 				}
-				// Pawn will be moved now, switch to untouched = false if it was true before
-				if(isUntouched = true) {
-					isUntouched = false;
-				}
 				// Return valid movement
 				return true;
 			}
 		}
 		setHasBeatenEnemy(false);
 		return false;
+	}
+	
+	public void setIsUntouched(boolean isUntouched) {
+		this.isUntouched = isUntouched;
+	}
+	
+	public void setIsUsingEnPassant(boolean isUsingEnPassant) {
+		this.isUsingEnPassant = isUsingEnPassant;
 	}
 	
 	public void isBeatingWithEnPassant(int startingFieldID, int startingRow, int startingColumn, boolean isBlack, Field endingField, List<Integer> validMovement) {

@@ -13,7 +13,6 @@ public abstract class Chesspiece {
 	private String type;
 	@Expose
 	private boolean isBlack;
-	@Expose
 	private Player player;
 	private ImageIcon icon;
 	private boolean hasBeatenEnemy;

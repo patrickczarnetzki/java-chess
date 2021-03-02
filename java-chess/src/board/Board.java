@@ -17,6 +17,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import com.google.gson.annotations.Expose;
+
 import gui.Mainframe;
 import gui.menu.Checkmate;
 import gui.menu.Transformation;
@@ -407,6 +409,18 @@ public class Board extends JPanel {
 		clip.open(audioInputStream);
 		clip.start();
 	}
+	
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+	
+	public void setRound(int round) {
+		this.round = round;
+	}
+	
+	public void setIsGameStarted(boolean isGameStarted) {
+		this.isGameStarted = isGameStarted;
+	}
 		
 	private class FieldListener implements ActionListener {
 		// Used to store the chesspiece on the clicked field if there is a chesspiece
@@ -533,7 +547,19 @@ public class Board extends JPanel {
 									// Game will be resumed by choosing a chesspiece in transformation menu
 									Transformation transformation = new Transformation(clickedField);
 								}
-							}							
+								// Set as untouched
+								tmpPawn.setIsUntouched(false);
+							}
+							// Check for Rook has to be changed to touched
+							if(chesspiece.getType().equals("Rook")) {
+								Rook tmpRook = (Rook) chesspiece;
+								tmpRook.setIsUntouched(false);
+							}
+							// Check for King has to be changed to touched
+							if(chesspiece.getType().equals("King")) {
+								King tempKing = (King) chesspiece;
+								tempKing.setIsUntouched(false);
+							}
 							// Switch to starting move
 							isStartingMovement = !isStartingMovement;
 							// Check if it was the first move of the game
