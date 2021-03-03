@@ -4,8 +4,20 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
 import gui.Mainframe;
+import recording.Entry;
 
 public class Chessmenu extends JPanel {
 	private Mainframe mainframe;
@@ -38,32 +50,77 @@ public class Chessmenu extends JPanel {
 	}
 	
 	public void resign() {
-		// TODO Auto-generated method stub
+		// Pause the game
+		mainframe.getBoard().pause();
+		if(mainframe.getBoard().getPlayerByColor(false).isPlaying()) {
+			new Checkmate(false,mainframe.getBoard());
+		} else {
+			new Checkmate(true,mainframe.getBoard());
+		}
 	}
 	
 	public void askForDraw() {
-		// TODO Auto-generated method stub
+		// Pause the game, will be resumed in DrawDialog
+		mainframe.getBoard().pause();
+		new DrawDialog(mainframe);
 	}
 	
 	public void askForBreak() {
-		// TODO Auto-generated method stub
+		// Pause the game, will be resumed in BreakDialog
+		mainframe.getBoard().pause();
+		new BreakDialog(mainframe);
 	}
 	
-	public void saveNotation() {
-		// TODO Auto-generated method stub
+	public void saveNotation() throws IOException {
+		// Pause the game
+		mainframe.getBoard().pause();
+		// Get entry list
+		List<Entry> entryList = mainframe.getBoard().getNotation().getEntryList();
+		// Using Gson to create a Json file
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		JsonArray entryArray = new JsonArray();
+		// Go through entryList and store Entries in JsonArray
+		for(int i=0; i<entryList.size(); i++) {
+			entryArray.add(gson.toJson(entryList.get(i)));
+		}
+		// Open save dialog
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Save Notation to...");
+		// Check which option user choosed
+		int userSelection = fileChooser.showSaveDialog(mainframe);
+		if(userSelection==JFileChooser.APPROVE_OPTION) {
+			// User choosed a place and clicked on save
+			Writer writer = new FileWriter(fileChooser.getSelectedFile());
+			writer.write(entryArray.toString());
+			writer.close();
+		}
+		if(!mainframe.getBoard().isGameInBreak()) {
+			// Resume the game
+			mainframe.getBoard().resume();
+		}
 	}
 	
 	private class ChessmenuButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource().equals(btnResign)) {
-				resign();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					resign();
+				}
 			} else if(event.getSource().equals(btnDraw)) {
-				askForDraw();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					askForDraw();
+				}
 			} else if(event.getSource().equals(btnBreak)) {
-				askForBreak();
+				if(!mainframe.getBoard().isGameInBreak()) {
+					askForBreak();
+				}
 			} else if(event.getSource().equals(btnSaveNote)) {
-				saveNotation();
+				try {
+					saveNotation();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

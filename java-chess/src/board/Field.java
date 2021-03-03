@@ -7,15 +7,19 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import com.google.gson.annotations.Expose;
+
 import pieces.Chesspiece;
 
 public class Field extends JButton {
 	private Board board;
 	private boolean isBlack;
+	@Expose
+	private int id;
+	@Expose
 	private Chesspiece chesspiece;
 	private int row;
 	private int column;
-	private int id;
 	private boolean isOccupied;
 	
 	public Field(Board board, boolean isBlack, Chesspiece chesspiece, int row, int column, int id, boolean isOccupied) {
@@ -99,5 +103,9 @@ public class Field extends JButton {
 	
 	public Board getBoard() {
 		return board;
+	}
+	
+	public boolean isBlack() {
+		return isBlack;
 	}
 }

@@ -1,18 +1,26 @@
 package board;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import com.google.gson.annotations.Expose;
+
+import gui.Mainframe;
+import gui.menu.Checkmate;
 import gui.menu.Transformation;
 import pieces.Bishop;
 import pieces.Chesspiece;
@@ -22,29 +30,42 @@ import pieces.Pawn;
 import pieces.Queen;
 import pieces.Rook;
 import player.Player;
+import recording.Entry;
 import recording.Notation;
 
 public class Board extends JPanel {
+	private Mainframe mainframe;
 	private Player[] players;
 	private Notation notation;
 	private Field[][] fields;
 	private FieldListener fieldListener;
 	private boolean isGameStarted;
 	private boolean isGamePaused;
+	private boolean isGameInBreak;
 	private boolean isStartingMovement;
 	private int turn;
 	private int round;
+	private int minutes; // Used in clocks
+	private int seconds; // Used in clocks
+	private String fieldColorOne;
+	private String fieldColorTwo;
 	
-	public Board() {
+	public Board(Mainframe mainframe) {
 		// Initialize variables
+		this.mainframe = mainframe;
 		fields = new Field[10][10];
 		fieldListener = new FieldListener();
 		players = new Player[2];
-		players[0] = new Player(true,false,this);
-		players[1] = new Player(false,true,this);
+		minutes = 60;
+		seconds = 0;
+		fieldColorOne = "#DDE2C6";
+		fieldColorTwo = "#93827F";
+		players[0] = new Player(true,false,this,minutes,seconds); //White player
+		players[1] = new Player(false,true,this,minutes,seconds); // Black player
 		notation = new Notation(this);
 		isGameStarted = false;
 		isGamePaused = false;
+		isGameInBreak = false;
 		isStartingMovement = true;
 		turn = 0;
 		round = 0;
@@ -55,6 +76,9 @@ public class Board extends JPanel {
 		createFields(fields);
 		// Setup chesspieces
 		setupChesspieces(fields);
+		// Start Clock Threads
+		players[0].getClock().startClock();
+		players[1].getClock().startClock();
 	}
 	
 	public void createFields(Field[][] fields) {
@@ -108,7 +132,7 @@ public class Board extends JPanel {
 					// Initialize playing fields (8x8 of two different colors)
 					if(iteratorColor%2==0) {
 						fields[r][c] = new Field(this,true,null,r-1,c-1,iteratorID,false);
-						fields[r][c].setBackground(Color.decode("#DDE2C6"));
+						fields[r][c].setBackground(Color.decode(getFieldColorOne()));
 						// Add ActionListener
 						fields[r][c].addActionListener(fieldListener);
 						// Add to GridLayout
@@ -118,7 +142,7 @@ public class Board extends JPanel {
 						iteratorID++;
 					} else {
 						fields[r][c] = new Field(this,false,null,r-1,c-1,iteratorID,false);
-						fields[r][c].setBackground(Color.decode("#93827F"));
+						fields[r][c].setBackground(Color.decode(getFieldColorTwo()));
 						// Add ActionListener
 						fields[r][c].addActionListener(fieldListener);
 						// Add to GridLayout
@@ -228,23 +252,23 @@ public class Board extends JPanel {
 	public boolean isGameStarted() {
 		return isGameStarted;
 	}
-	
+		
 	public boolean isGamePaused() {
 		return isGamePaused;
 	}
-	
+		
 	public boolean isStartingMovement() {
 		return isStartingMovement;
 	}
-	
+		
 	public int getTurn() {
 		return turn;
 	}
-	
+		
 	public int getRound() {
 		return round;
 	}
-	
+		
 	public void pause() {
 		isGamePaused = true;
 	}
@@ -256,13 +280,146 @@ public class Board extends JPanel {
 	public Notation getNotation() {
 		return notation;
 	}
-	
+		
 	public Player getPlayerByColor(boolean isBlack) {
 		if(!isBlack) {
 			return players[0];
 		} else {
 			return players[1];
 		}
+	}
+	
+	public Field[][] getFields() {
+		return fields;
+	}
+	
+	public void deleteAllChesspieces() {
+		for(int i=0; i<=9; i++) {
+			for(int j=0; j<=9; j++) {
+				if(fields[i][j].getID()>=0 && fields[i][j].getID()<=63) {
+					fields[i][j].deleteChesspiece();
+				}
+			}
+		}
+	}
+	
+	public int getMinutes() {
+		return minutes;
+	}
+	
+	public int getSeconds() {
+		return seconds;
+	}
+	
+	public String getFieldColorOne() {
+		return fieldColorOne;
+	}
+	
+	public String getFieldColorTwo() {
+		return fieldColorTwo;
+	}
+	
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+	
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
+	}
+	
+	public void setFirstColor(String color) {
+		this.fieldColorOne = color;
+	}
+	
+	public void setSecondColor(String color) {
+		this.fieldColorTwo = color;
+	}
+	
+	public void setFieldColor(String colorOne, String colorTwo) {
+		for(int i=0; i<fields.length; i++) {
+			for(int j=0; j<fields[i].length; j++) {
+				if(fields[i][j].getID()>=0 && fields[i][j].getID()<=63) {
+					if(fields[i][j].isBlack()) {
+						fields[i][j].setBackground(Color.decode(colorOne));
+					} else {
+						fields[i][j].setBackground(Color.decode(colorTwo));
+					}
+				}
+			}
+		}
+	}
+	
+	public boolean isGameInBreak() {
+		return isGameInBreak;
+	}
+	
+	public void setIsGameInBreak(boolean isGameInBreak) {
+		this.isGameInBreak = isGameInBreak;
+	}
+	
+	public void setTime(int minutes, int seconds) {
+		players[0].getClock().setMinutes(minutes);
+		players[0].getClock().setSeconds(seconds);
+		players[1].getClock().setMinutes(minutes);
+		players[1].getClock().setSeconds(seconds);
+	}
+	
+	public void newGame() {
+		// Pause the game
+		pause();
+		// Delete all chesspieces
+		deleteAllChesspieces();
+		// Restore starting settings
+		isGameStarted = false;
+		isGamePaused = false;
+		isStartingMovement = true;
+		turn = 0;
+		round = 0;
+		// Setup players
+		players[0].setIsPlaying(true);
+		players[1].setIsPlaying(false);
+		// Restore clocks
+		players[0].getClock().setMinutes(minutes);
+		players[0].getClock().setSeconds(seconds);
+		players[1].getClock().setMinutes(minutes);
+		players[1].getClock().setSeconds(seconds);
+		// Delete last highlight
+		for(int i=0; i<fields.length; i++) {
+			for(int j=0; j<fields[i].length; j++) {
+				fields[i][j].setBorder(null);
+			}
+		}
+		// Create a new setup of chesspieces
+		setupChesspieces(fields);
+		// Restore Notation
+		notation.clearEntryList();
+		// Clear lost pieces component
+		mainframe.getTopmenu().getLostPieces().clearLostChesspieces();
+	}
+	
+	public Mainframe getMainframe() {
+		return mainframe;
+	}
+	
+	public void playSound(String fileURL) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		String soundFile = fileURL;    
+		AudioInputStream audioInputStream;
+		audioInputStream = AudioSystem.getAudioInputStream(new File(soundFile).getAbsoluteFile());
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioInputStream);
+		clip.start();
+	}
+	
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+	
+	public void setRound(int round) {
+		this.round = round;
+	}
+	
+	public void setIsGameStarted(boolean isGameStarted) {
+		this.isGameStarted = isGameStarted;
 	}
 		
 	private class FieldListener implements ActionListener {
@@ -274,6 +431,10 @@ public class Board extends JPanel {
 		private int startingFieldID = 0;
 		// Used to store position of second clicked field (ending field)
 		private int endingFieldID = 0;
+		// Used to store last highlighted starting field
+		private int highlightedStartingFieldID = 0;
+		// Used to store last highlighted ending field
+		private int highlightedEndingFieldID = 0;
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -298,7 +459,6 @@ public class Board extends JPanel {
 					if(chesspiece!=null) {
 						// Check for first move by black (Invalid movement, white has to start the game)
 						if(chesspiece.isBlack() && !isGameStarted()) {
-							System.out.println("White has to start the match");
 						// Check for first move of the match by white (valid move)
 						} else if(!chesspiece.isBlack() && players[0].isPlaying() && !isGameStarted()) {
 							// Delete chesspiece on starting position
@@ -387,14 +547,25 @@ public class Board extends JPanel {
 									// Game will be resumed by choosing a chesspiece in transformation menu
 									Transformation transformation = new Transformation(clickedField);
 								}
-							}							
+								// Set as untouched
+								tmpPawn.setIsUntouched(false);
+							}
+							// Check for Rook has to be changed to touched
+							if(chesspiece.getType().equals("Rook")) {
+								Rook tmpRook = (Rook) chesspiece;
+								tmpRook.setIsUntouched(false);
+							}
+							// Check for King has to be changed to touched
+							if(chesspiece.getType().equals("King")) {
+								King tempKing = (King) chesspiece;
+								tempKing.setIsUntouched(false);
+							}
 							// Switch to starting move
 							isStartingMovement = !isStartingMovement;
-							// Check if it was the first move of the game to start the black clock for the first time
+							// Check if it was the first move of the game
 							if(players[0].isPlaying() && !isGameStarted()) {
 								// Set game to started
 								isGameStarted = true;
-								// Start black clock
 							}
 							// Switch players and clocks
 							if(players[0].isPlaying()) {
@@ -407,27 +578,68 @@ public class Board extends JPanel {
 								players[1].setIsPlaying(false);
 							}
 							// Add movement to notation component
-							
+							notation.addEntry(endingFieldID, chesspiece);
 							// One turn is over (Turn = One move of white or black player)
 							turn++;
 							// Check if round is over (Round = Two moves, one move of each player (black and white)
 							if(turn%2==0) {
 								round++;
 							}
+							// Highlight last move
+							getFieldByID(highlightedStartingFieldID).setBorder(null);
+							getFieldByID(highlightedEndingFieldID).setBorder(null);
+							getFieldByID(startingFieldID).setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
+							getFieldByID(endingFieldID).setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
+							highlightedStartingFieldID = startingFieldID;
+							highlightedEndingFieldID = endingFieldID;
+							// Start sound if enemy was beaten and add beaten chesspiece to lost pieces component
+							if(chesspiece.hasBeatenEnemy()) {
+								try {
+									playSound("src/sound/beat.wav");
+									// Add to lost pieces component
+									getMainframe().getTopmenu().getLostPieces().addLostChesspiece(chesspieceClickedField);
+									chesspiece.setHasBeatenEnemy(false);
+								} catch (UnsupportedAudioFileException e) {
+									e.printStackTrace();
+								} catch (IOException e) {
+									e.printStackTrace();
+								} catch (LineUnavailableException e) {
+									e.printStackTrace();
+								}
+							}
 							// Check if opponent is checkmate now to stop the game
 							if(!chesspiece.isBlack()) {
 								// Player is playing white, start checkmate test for black
 								if(searchAndGetKing(true).isCheckmate()) {
-									System.out.println("Black is checkmate, White wins!");
+									new Checkmate(true,Board.this);
 								}
 							} else {
 								// Player is playing black, start checkmate test for white
 								if(searchAndGetKing(false).isCheckmate()) {
-									System.out.println("White is checkmate, Black wins!");
+									new Checkmate(false,Board.this);
 								}
 							}
 						} else {
-							System.out.println("King would be in checkmate after movement.");
+							// King would be checkmate
+							// Restore old settings
+							isStartingMovement = !isStartingMovement;
+							// Set chesspiece back to starting position
+							getFieldByID(startingFieldID).setChesspiece(chesspiece);
+							// Check if ending field was occupied an restore it
+							if(chesspieceClickedField!=null) {
+								getFieldByID(endingFieldID).setChesspiece(chesspieceClickedField);
+							} else {
+								// Delete old chesspiece
+								getFieldByID(endingFieldID).deleteChesspiece();
+							}
+							// Restore rochade settings
+							if(tmpKing.isUsingLongRochade()) {
+								tmpKing.setIsUntouched(true);
+								tmpKing.setIsUsingLongRochade(false);
+							} else if(tmpKing.isUsingShortRochade()) {
+								tmpKing.setIsUntouched(true);
+								tmpKing.setIsUsingShortRochade(false);
+							}
 						}
 					} else {
 						// Invalid movement

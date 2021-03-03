@@ -20,7 +20,7 @@ import gui.menu.Topmenu;
 public class Mainframe extends JFrame {
 	
 	private Topmenu topmenu;
-	private Chessmenu chessmenu;
+	private static Chessmenu chessmenu;
 	private Board board;
 
 	public Mainframe() {
@@ -37,7 +37,7 @@ public class Mainframe extends JFrame {
 		topmenu = new Topmenu(this);
 		getContentPane().add(topmenu,BorderLayout.NORTH);
 		// Center Component (Board)
-		board = new Board();
+		board = new Board(this);
 		getContentPane().add(board,BorderLayout.CENTER);
 		// East Component (Recording Panel)
 		JPanel recordingPanel = new JPanel(new BorderLayout());
@@ -63,5 +63,17 @@ public class Mainframe extends JFrame {
 				new Mainframe().setVisible(true);
 			}
 		});
+	}
+	
+	public Board getBoard() {
+		return board;
+	}
+	
+	public Topmenu getTopmenu() {
+		return topmenu;
+	}
+	
+	public static Chessmenu getChessmenu() {
+		return chessmenu;
 	}
 }

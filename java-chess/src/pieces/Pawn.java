@@ -6,13 +6,18 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import com.google.gson.annotations.Expose;
+
 import board.Field;
 import player.Player;
 
 public class Pawn extends Chesspiece {
+	@Expose
 	private boolean isUntouched;
+	@Expose
 	private boolean isEnPassant; // Can be beaten by en-passant
 	private boolean isTransforming;
+	@Expose
 	private boolean isUsingEnPassant; // Has beaten opponent Pawn by en-passant move
 	Pawn enemyPawn; // Stores the enemy Pawn for en-passant
 
@@ -27,6 +32,10 @@ public class Pawn extends Chesspiece {
 	
 	public boolean isEnPassant() {
 		return isEnPassant;
+	}
+	
+	public void setIsEnPassant(boolean isEnPassant) {
+		this.isEnPassant = isEnPassant;
 	}
 	
 	public boolean isTransforming() {
@@ -93,6 +102,7 @@ public class Pawn extends Chesspiece {
 			// Field was occupied
 			// Check for opponent chesspiece on ending field
 			if(endingField.getChesspiece().isBlack()!=isBlack()) {
+				setHasBeatenEnemy(true);
 				// Check playing color to choose right direction (white pawns move from bottom to top and black pawns from top to bottom)
 				if(!isBlack()) {
 					// White pawn is attacking
@@ -138,15 +148,20 @@ public class Pawn extends Chesspiece {
 				} else if(isBlack() && endingRow==7) {
 					isTransforming = true;
 				}
-				// Pawn will be moved now, switch to untouched = false if it was true before
-				if(isUntouched = true) {
-					isUntouched = false;
-				}
 				// Return valid movement
 				return true;
 			}
 		}
+		setHasBeatenEnemy(false);
 		return false;
+	}
+	
+	public void setIsUntouched(boolean isUntouched) {
+		this.isUntouched = isUntouched;
+	}
+	
+	public void setIsUsingEnPassant(boolean isUsingEnPassant) {
+		this.isUsingEnPassant = isUsingEnPassant;
 	}
 	
 	public void isBeatingWithEnPassant(int startingFieldID, int startingRow, int startingColumn, boolean isBlack, Field endingField, List<Integer> validMovement) {
@@ -219,6 +234,7 @@ public class Pawn extends Chesspiece {
 							case 63: validMovement.add(7); validMovement.add(9); break;
 							}
 							isUsingEnPassant = true;
+							setHasBeatenEnemy(true);
 						}
 					}
 				}

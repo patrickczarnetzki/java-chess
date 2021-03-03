@@ -3,10 +3,14 @@ package pieces;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+
+import com.google.gson.annotations.Expose;
+
 import board.Field;
 import player.Player;
 
 public class Rook extends Chesspiece {
+	@Expose
 	private boolean isUntouched;
 	
 	public Rook(Field field, boolean isBlack, Player player, ImageIcon icon, String type) {
@@ -16,6 +20,10 @@ public class Rook extends Chesspiece {
 	
 	public boolean isUntouched() {
 		return isUntouched;
+	}
+	
+	public void setIsUntouched(boolean isUntouched) {
+		this.isUntouched = isUntouched;
 	}
 	
 	@Override
@@ -50,6 +58,7 @@ public class Rook extends Chesspiece {
 						// Field is occupied by opponent color and it is the ending field
 						} else {
 							validMovement.add(i);
+							setHasBeatenEnemy(true);
 							break;
 						}
 					} else {
@@ -75,6 +84,7 @@ public class Rook extends Chesspiece {
 						// Field is occupied by opponent color and it is the ending field
 						} else {
 							validMovement.add(i);
+							setHasBeatenEnemy(true);
 							break;
 						}
 					} else {
@@ -107,6 +117,7 @@ public class Rook extends Chesspiece {
 						// Field is occupied by opponent color and it is the ending field
 						} else {
 							validMovement.add(i);
+							setHasBeatenEnemy(true);
 							break;
 						}
 					} else {
@@ -132,6 +143,7 @@ public class Rook extends Chesspiece {
 						// Field is occupied by opponent color and it is the ending field
 						} else {
 							validMovement.add(i);
+							setHasBeatenEnemy(true);
 							break;
 						}
 					} else {
@@ -153,7 +165,6 @@ public class Rook extends Chesspiece {
 		// Check for a match (Valid movement)
 		for(int i=0; i<validMovement.size(); i++) {
 			if(validMovement.get(i)==endingFieldID) {
-				isUntouched = false;
 				return true;
 			}
 		}
